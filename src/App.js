@@ -10,7 +10,6 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Sidebar />
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />

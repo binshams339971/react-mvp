@@ -1,8 +1,9 @@
 import '../assets/css/Sidebar.css';
-function Sidebar() {
+import { motion } from "framer-motion"
+function Sidebar(props) {
     return (
-        <div className="side-menu" id="sideMenu">
-            <h1 className="cat-header">Categories</h1>
+        <motion.div className="side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }}>
+            <h2 className="cat-header">Categories</h2>
             <ul className="cat-list">
                 <li><i className="fa-solid fa-headset"></i>Electronics</li>
                 <hr />
@@ -17,7 +18,7 @@ function Sidebar() {
                 <li><i className="fa-solid fa-headset"></i>Electronics</li>
                 <hr />
             </ul>
-        </div >
+        </motion.div >
     )
 }
 

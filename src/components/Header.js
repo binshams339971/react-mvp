@@ -4,9 +4,9 @@ import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
 import logo from '../assets/images/logo.png'
 import Sidebar from "./Sidebar.js";
+import { motion } from "framer-motion";
 function Header() {
-    const [show, setShow] = useState(false);
-
+    const [show, setShow] = useState();
     return (
         <nav className='nav'>
             <div className="header">
@@ -43,6 +43,7 @@ function Header() {
                     <a href="/"><img className="logo-img mx-auto my-2" src={logo} /></a>
                 </div>
             </div>
+            {show == true ? <Sidebar x={[-300, 0]} /> : (show == false ? <Sidebar x={[0, -300]} /> : "")}
         </nav>
     );
 }
