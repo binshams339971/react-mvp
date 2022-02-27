@@ -1,0 +1,36 @@
+.side-menu {
+    display: block;
+    position: absolute;
+    width: 300px;
+    height: 900px;
+    left: -3px;
+    top: 155px;
+    bottom: 150px;
+    background: #1c4a45;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+  }
+  .cat-header {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 50px;
+    color: #ffffff;
+  }
+  .cat-list {
+    list-style: none;
+  }
+  .cat-list li {
+    font-size: 20px;
+    line-height: 30px;
+    color: #ffffff;
+    margin: 15px 0;
+  }
+  .cat-list li i {
+    color: #e3fc52;
+    margin-right: 20px;
+  }
+  .cat-list hr {
+    width: 230px;
+    margin-right: 30px;
+    border: 0.476244px solid #f4f4f8;
+  }

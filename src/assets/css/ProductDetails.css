@@ -1,0 +1,103 @@
+.notice-section{
+    padding: 20px;
+}
+.section-title-notice {
+     margin: 0px 0;
+     width: fit-content;
+     font-size: 25.11px;
+     line-height: 53px;
+     color: #979797;
+ }
+ 
+.row1{
+    height: 140px;
+    border-radius: 17.3945px;
+    background-color: white;
+    box-shadow: 0px 0px 7px 3px rgb(148 148 148 / 30%);
+ }
+ .row1:hover{
+     box-shadow: 0px 0px 10px 7px rgb(148 148 148 / 30%);
+ }
+ 
+ .row1 .card-img{
+    height: 140px;
+    border-radius: 17.3945px 0 0 17.3945px;
+ }
+ .row1 .play-icon1{
+    position: absolute;
+    left: 8%;
+    margin-top: 33px;
+ }
+
+ .title1{
+     margin-left: 15px;
+ }
+ .title1 a{
+     font-size: 17px;
+     text-decoration: none;
+     color: black;
+ }
+ .title1 a:hover{
+     text-decoration: none;
+     color: #4095D9;
+     font-size: 16.5px;
+ }
+ .title1 a h5{
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 30px;
+
+    color: #1C4A45;
+ }
+ .title1 a p{
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #646464;
+ }
+
+ .infos ::placeholder {
+    color: #929292;
+  }
+
+  .infos input{
+    text-indent: 10px;
+  }
+
+  .modal-content{
+      min-height: 250px;
+  }
+
+  .socials a{
+      border: 1px solid rgb(216, 216, 216);
+      margin: 0 20px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+
+  }
+  .socials a:hover{
+    text-decoration: none;
+}
+
+.socials .fb{
+    margin-left: -10px;
+    color: black;
+}
+
+.socials .twt{
+    color: black;
+}
+.socials .mnsg{
+    margin-left: -12px;
+    color: black;
+}
+.socials .sms{
+    margin-left: 5px;
+    color: black;
+}
+
+  .socials img{
+    margin: auto;
+}

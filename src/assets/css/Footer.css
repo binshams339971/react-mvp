@@ -1,0 +1,74 @@
+.footer{
+    background: #E7EAEE;
+    width: 100%;
+  }
+  .contact{
+    font-weight: 500;
+    font-size: 31.4701px;
+    line-height: 37px;
+    margin-bottom: -5px;
+    color: #1C4A45;
+  }
+  .send{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17.9829px;
+    line-height: 21px;
+  
+    color: #1C4A45;
+  }
+  
+  .contact-input{
+    width: 120px; 
+    height: 20px; 
+    background: white; 
+    border: 0; 
+    font-size: 12px;
+  }
+  
+  .contact-message{
+    margin-top: 5px;
+    width: 180px; 
+    height: 60px; 
+    background: white; 
+    border: 0; 
+    font-size: 12px;
+  }
+  .submit-btn{
+    margin-top: 10px;
+    background: #1C4A45;
+    color: white;
+    padding: 2px 15px;
+    font-size: 14px;
+  }
+  
+  .list-title{
+    margin-top: 15px;
+    color: #1C4A45;
+    font-weight: 500;
+  }
+  
+  .links{
+    color: #1C4A45;
+    margin-left: -10px;
+  }
+  
+  .bottom-logo{
+    width: 50%;
+    height: 50%;
+  }
+  
+  .bottom-text{
+    font-size: 14px;
+    line-height: 19px;
+    color: #5F5F5F;
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+  
+  .copy-right{
+    text-align: right;
+    font-size: 10px;
+    color: #979797;
+    margin-top: 40px;
+  }
