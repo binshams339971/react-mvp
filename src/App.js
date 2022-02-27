@@ -9,13 +9,19 @@ import ProductDetails from './components/ProductDetails.js';
 function App() {
   return (
     <div className="App">
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/details' element={<ProductDetails />} />
+          <Route path='/details/:pId' element={<ProductDetails />} />
           <Route path='/information' element={<Information />} />
           <Route path='/feedback' element={<Feedback />} />
+          <Route path="*" element={
+            <main style={{ padding: "1rem" }}>
+              <p>There's nothing here!</p>
+            </main>
+          }
+          />
         </Routes>
       </Router>
       <Footer />

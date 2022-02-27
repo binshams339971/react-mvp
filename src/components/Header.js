@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route, NavLink as Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
 import logo from '../assets/images/logo.png'
@@ -7,6 +7,8 @@ import Sidebar from "./Sidebar.js";
 import { motion } from "framer-motion";
 function Header() {
     const [show, setShow] = useState();
+
+
     return (
         <nav className='nav'>
             <div className="header">
@@ -21,26 +23,26 @@ function Header() {
                             </div>
                             <div className="col-4"></div>
                             <div className="col-2 d-md-block d-none" style={{ marginTop: "40px" }}>
-                                <a href='/information' className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                <NavLink to="/information" className='d-flex text-white' style={{ textDecoration: "none" }}>
                                     <span className="material-icons-outlined mr-2">
                                         info
                                     </span>
                                     <p>Information</p>
-                                </a>
+                                </NavLink>
                             </div>
                             <div className="col-2 d-md-block d-none" style={{ marginTop: "40px" }}>
-                                <a href="/feedback" className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                <NavLink to="/feedback" className='d-flex text-white' style={{ textDecoration: "none" }}>
                                     <span className="material-icons-outlined mr-2">
                                         chat
                                     </span>
                                     <p>Feedback</p>
-                                </a>
+                                </NavLink>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="header-top d-flex justify-content-center">
-                    <a href="/"><img className="logo-img mx-auto my-2" src={logo} /></a>
+                    <NavLink to="/"><img className="logo-img mx-auto my-2" src={logo} /></NavLink>
                 </div>
             </div>
             {show == true ? <Sidebar x={[-300, 0]} /> : (show == false ? <Sidebar x={[0, -300]} /> : "")}

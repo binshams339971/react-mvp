@@ -1,14 +1,14 @@
 import ReactPlayer from 'react-player';
-
+import { Link } from "react-router-dom";
 export default function Information() {
     return (
         <div className='container'>
             <div className='d-flex justify-content-between'>
-                <a href="/">
+                <Link to="/">
                     <span class="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
                         keyboard_backspace
                     </span>
-                </a>
+                </Link>
                 <h3 className='' style={{ color: "#1C4A45", fontSize: "36px" }}>Privacy Policy</h3>
                 <h3 className=''></h3>
             </div>

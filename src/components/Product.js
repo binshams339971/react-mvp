@@ -6,7 +6,7 @@ import acer4 from '../assets/images/acer-4.png'
 import acer5 from '../assets/images/acer-5.png'
 import playIcon from '../assets/images/play.svg'
 import Carousel, { consts } from 'react-elastic-carousel';
-
+import { Link } from "react-router-dom";
 function Product(props) {
     const products = [
         {
@@ -58,15 +58,16 @@ function Product(props) {
                         <img class="card-img" src={product.img} />
                         <div class="info">
                             <span>ACER<br />ASPIRE 4</span><br />
-                            <a href="/details" class="view_now-btn">View Now
+                            <Link to={`/details/${product.id}`} class="view_now-btn">View Now
                                 <img src={playIcon} class="play-icon" />
-                            </a>
+                            </Link>
 
                         </div>
                     </div>
-                )}
-            </Carousel>
-        </div>
+                )
+                }
+            </Carousel >
+        </div >
     )
 }
 export default Product;
