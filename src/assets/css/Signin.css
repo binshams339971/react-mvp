@@ -1,0 +1,111 @@
+#ip2 {
+    border-radius: 25px;
+    border: 2px solid #325654;
+    padding: 20px; 
+    width: 350px;
+    height: 15px;  
+}
+
+.signin p{
+color: #444B59;
+font-weight: 500;
+margin: 15px 0;
+}
+
+.btn0 {
+    width: 350px;
+    position: relative;
+    display: inline-block;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 30px;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: 700;
+}
+.btn--action {
+    background-color: #325654;
+    color: white;
+  }
+
+  .form-group {
+    display: block;
+    margin-bottom: 0px;
+    margin-top: 20px;
+  }
+  
+  .form-group input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+  }
+  
+  .form-group label {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .form-group label:before {
+    content:'';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #325654;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 7px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .form-group input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 9px;
+    width: 6px;
+    height: 16px;
+    border: solid #325654;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .forgot{
+    font-weight: 600;
+    font-size: 16.3468px;
+    color: #325654;
+    margin-top: 20px;
+    margin-right: 10px;
+  }
+
+  .forgot:hover{
+    text-decoration: none;
+    color: #4a6e6d;
+}
+
+.title101{
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: -0.395367px;
+    color: #1C4A45;
+    margin: 30px 0 5px 0;
+}
+
+.title102{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: -0.395367px;
+    color: #5F5F5F;
+}

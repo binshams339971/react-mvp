@@ -29,7 +29,7 @@ function Sidebar(props) {
                 <hr />
             </ul>
             <div className='text-center' style={{ marginTop: "450px" }}>
-                <Link to='/' className="sign-in-btn">Sign in</Link>
+                <Link to='/signin' className="sign-in-btn">Sign in</Link>
             </div>
         </motion.div >
     )

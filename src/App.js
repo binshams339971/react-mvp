@@ -6,6 +6,7 @@ import Home from './components/Home.js';
 import Feedback from './components/Feedback.js';
 import Information from './components/Information.js';
 import ProductDetails from './components/ProductDetails.js';
+import Signin from './components/Signin.js';
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,7 @@ function App() {
           <Route path='/details/:pId' element={<ProductDetails />} />
           <Route path='/information' element={<Information />} />
           <Route path='/feedback' element={<Feedback />} />
+          <Route path='/signin' element={<Signin />} />
           <Route path="*" element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>
