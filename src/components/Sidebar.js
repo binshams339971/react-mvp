@@ -28,7 +28,7 @@ function Sidebar(props) {
                 <li><i className="fa-solid fa-headset"></i>Electronics</li>
                 <hr />
             </ul>
-            <div className='text-center' style={{ marginTop: "500px" }}>
+            <div className='text-center' style={{ marginTop: "450px" }}>
                 <Link to='/' className="sign-in-btn">Sign in</Link>
             </div>
         </motion.div >
