@@ -2,13 +2,13 @@
     display: block;
     position: absolute;
     width: 250px;
-    height: 1020px;
+    height: 950px;
     left: -3px;
     top: 155px;
     bottom: 150px;
     background: #1c4a45;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    overflow: hidden;
+    overflow-x: hidden;
   }
   .cat-header {
     margin-top: 10px;

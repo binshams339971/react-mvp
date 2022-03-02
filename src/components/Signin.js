@@ -31,7 +31,7 @@ function Signin() {
                                 </div>
                                 <a href="#" className='forgot'>Forgot Password?</a>
                             </div>
-                            <button class="btn0 btn--action">Sign in</button>
+                            <Link to="/admin/dashboard" class="btn0 btn--action">Sign in</Link>
                         </div>
                         <h3 className=''></h3>
                     </div>

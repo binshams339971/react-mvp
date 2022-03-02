@@ -7,6 +7,8 @@ import Feedback from './components/Feedback.js';
 import Information from './components/Information.js';
 import ProductDetails from './components/ProductDetails.js';
 import Signin from './components/Signin.js';
+import Dashboard from './components/Admin/Dashboard';
+import Products from './components/Admin/Products';
 function App() {
   return (
     <div className="App">
@@ -18,6 +20,8 @@ function App() {
           <Route path='/information' element={<Information />} />
           <Route path='/feedback' element={<Feedback />} />
           <Route path='/signin' element={<Signin />} />
+          <Route path='/admin/dashboard' element={<Dashboard />} />
+          <Route path='/admin/products' element={<Products />} />
           <Route path="*" element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>

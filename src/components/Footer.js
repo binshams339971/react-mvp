@@ -6,7 +6,7 @@ import email from '../assets/images/email.svg'
 function Footer() {
     return (
         <>
-            <div className="container-fluid footer mt-5">
+            <div className="container-fluid footer mt-2">
                 <div className="container py-4">
                     <div className="row ml-4 ml-md-0">
                         <div className="col-md-4 col-12">

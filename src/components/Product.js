@@ -5,9 +5,15 @@ import acer3 from '../assets/images/acer-3.png'
 import acer4 from '../assets/images/acer-4.png'
 import acer5 from '../assets/images/acer-5.png'
 import playIcon from '../assets/images/play.svg'
-import Carousel, { consts } from 'react-elastic-carousel';
+import Carousel from 'react-elastic-carousel';
 import { Link } from "react-router-dom";
+// import ProductService from '../services/ProductService.js';
+import { useEffect } from 'react'
 function Product(props) {
+    // useEffect(() => {
+    //     let a = ProductService.getProducts();
+    //     console.log(a);
+    // })
     const products = [
         {
             id: 1,

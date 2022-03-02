@@ -32,6 +32,12 @@ margin: 15px 0;
     color: white;
   }
 
+  .btn--action:hover {
+    background-color: #325654;
+    color: white;
+    text-decoration: none;
+  }
+
   .form-group {
     display: block;
     margin-bottom: 0px;
