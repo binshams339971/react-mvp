@@ -9,6 +9,8 @@ import ProductDetails from './components/ProductDetails.js';
 import Signin from './components/Signin.js';
 import Dashboard from './components/Admin/Dashboard';
 import Products from './components/Admin/Products';
+import Users from './components/Admin/Users';
+import UserDetails from 'components/Admin/UserDetails.js';
 function App() {
   return (
     <div className="App">
@@ -22,6 +24,8 @@ function App() {
           <Route path='/signin' element={<Signin />} />
           <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route path='/admin/products' element={<Products />} />
+          <Route path='/admin/users' element={<Users />} />
+          <Route path='/admin/users/:uId' element={<UserDetails />} />
           <Route path="*" element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>

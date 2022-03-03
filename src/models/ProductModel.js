@@ -1,3 +1,5 @@
+import CategoryModel from "./CategoryModel";
+import SubCategoryModel from "./SubCategoryModel";
 class ProductModel
 {
     constructor({
@@ -12,7 +14,9 @@ class ProductModel
         video_src,
         video_thumbnail_src,
         createdAt,
-        updatedAt
+        updatedAt,
+        Category,
+        SubCategory
     }){ 
         this.id = id;
         this.identifier = identifier;
@@ -26,6 +30,22 @@ class ProductModel
         this.video_thumbnail_src = video_thumbnail_src;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        if(Category && Array.isArray(Category)){
+            this.Category = [];
+            Category.forEach((element)=>{
+                this.Category.push(new CategoryModel(element));
+            });
+        }else if(Category && typeof Category == 'object'){
+            this.Category = new CategoryModel(Category);
+        }
+        if(SubCategory && Array.isArray(SubCategory)){
+            this.SubCategory = [];
+            SubCategory.forEach((element)=>{
+                this.SubCategory.push(new SubCategoryModel(element));
+            });
+        }else if(SubCategory && typeof SubCategory == 'object'){
+            this.SubCategory = new SubCategoryModel(SubCategory);
+        }
      }
 }
 

@@ -2,14 +2,15 @@ import '../assets/css/Signin.css';
 import { Link } from "react-router-dom";
 import art from '../assets/images/art.png'
 import logo2 from '../assets/images/logo2.png'
+
 function Signin() {
     return (
-        <div className="container">
+        <div className="container" id="content">
             <div className="row">
                 <div className="col-md-6 col-12">
                     <div className='d-flex justify-content-between'>
                         <Link to="/">
-                            <span class="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
+                            <span className="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
                                 keyboard_backspace
                             </span>
                         </Link>
@@ -23,15 +24,15 @@ function Signin() {
                             <p>Username</p>
                             <input type="text" id="ip2" />
                             <p>Password</p>
-                            <input type="password" id="ip2" />
+                            <input type="password" id="ip3" />
                             <div className='d-flex justify-content-between'>
-                                <div class="form-group">
-                                    <input type="checkbox" id="html" />
-                                    <label for="html">Remember me</label>
+                                <div className="form-group">
+                                    <input type="checkbox" id="check" />
+                                    <label htmlFor="check">Remember me</label>
                                 </div>
                                 <a href="#" className='forgot'>Forgot Password?</a>
                             </div>
-                            <Link to="/admin/dashboard" class="btn0 btn--action">Sign in</Link>
+                            <Link to="/admin/dashboard" className="btn0 btn--action">Sign in</Link>
                         </div>
                         <h3 className=''></h3>
                     </div>

@@ -1,14 +1,36 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
 import logo from '../assets/images/logo.png'
 import Sidebar from "./Sidebar.js";
-import { motion } from "framer-motion";
+import Home from "./Home";
+
 function Header() {
     const [show, setShow] = useState();
+    const y = document.getElementById("content");
+    useEffect(() => {
+        if (y != null) {
+            if (show) {
+                y.style.marginLeft = "250px";
+                y.style.transition = "50s linear";
+            } else {
+                y.style.marginLeft = "auto";
+                y.style.transition = "20s linear";
+            }
+            // show ? y.style.marginLeft = "250px" : y.style.marginLeft = "auto";
+        }
+    });
 
-
+    let location = useLocation();
+    let l = location.pathname;
+    const [loc, setLoc] = useState(location.pathname);
+    useEffect(() => {
+        if (!(l == loc)) {
+            setShow(false);
+            setLoc(location.pathname);
+        }
+    });
     return (
         <nav className='nav'>
             <div className="header">

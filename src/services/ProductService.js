@@ -4,11 +4,13 @@ import productMapper from '../mapper/ProductMapper';
 const productService = {
     getProducts: async (query) => { 
         try {
-            apiProducts.getAll(query).then((data) => {
+            return apiProducts.getAll(query).then((data) => {
+                console.log(data);
                 return {
                     status: 'success',
                     data: productMapper.mapProducts(data)
                 };
+
             }).catch((error) => {
                 return {
                     status: 'failed'
@@ -22,7 +24,7 @@ const productService = {
     },
     getProductById: async (id) => { 
         try {
-            apiProducts.getById(id).then((data) => {console.log(data);
+            return apiProducts.getById(id).then((data) => {console.log(data);
                 return {
                     status: 'success',
                     data: productMapper.mapProducts(data)

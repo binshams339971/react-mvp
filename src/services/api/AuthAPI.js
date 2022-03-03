@@ -7,6 +7,7 @@ const url = 'auth';
 
 const apiAuth = new ApiCore({
     getAll: false,
+    getCount: false,
     getById: false,
     post: false,
     put: false,
@@ -17,7 +18,7 @@ const apiAuth = new ApiCore({
 
 // Add custom api call logic here
 apiAuth.login = (credentials) => {
-    return apiProvider.post('/auth/login', credentials);
+    return apiProvider.post(`/${url}/login`, credentials);
 }
 
 export default apiAuth;

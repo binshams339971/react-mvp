@@ -1,0 +1,27 @@
+.searchBox0{
+    background: #EBEFF2;
+    border-radius: 10px;
+    border: none;
+    margin-left: 100px;
+    padding-left: 20px;
+    width: 50%;
+    height: 40px;
+}
+
+.userInfo{
+    margin: 40px 40px;
+}
+.userInfo table{
+    border-left: 1px solid #EBEFF2;
+    border-right: 1px solid #EBEFF2;
+    border-bottom: 1px solid #EBEFF2;
+}
+
+.userInfo table th{
+    color: #899096
+}
+
+.table-row{
+    cursor:pointer;
+}
+    

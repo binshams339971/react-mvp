@@ -7,6 +7,7 @@ const single = 'product';
 
 const apiProducts = new ApiCore({
     getAll: true,
+    getCount: false,
     getById: true,
     post: true,
     put: true,

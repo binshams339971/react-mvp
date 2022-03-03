@@ -22,6 +22,21 @@ const getAll = (resource, requestConfig) => {
     .catch(handleError); 
 }; 
 
+const getCount = (resource, requestConfig) => {
+  requestConfig = {
+    headers: {
+      'Authrization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+      ...requestConfig?.headers
+    },
+    ...requestConfig
+  };
+  return axios 
+    .get(`${BASE_URL}/${resource}/count`, requestConfig) 
+    .then(handleResponse) 
+    .catch(handleError); 
+};
+
 const getById = (resource, id, requestConfig) => { 
   requestConfig = {
     headers: {
@@ -115,6 +130,7 @@ const remove = (resource, id, requestConfig) => {
 const apiProvider = { 
   getAll, 
   getById, 
+  getCount,
   post, 
   put, 
   patch, 

@@ -10,10 +10,6 @@ import { Link } from "react-router-dom";
 // import ProductService from '../services/ProductService.js';
 import { useEffect } from 'react'
 function Product(props) {
-    // useEffect(() => {
-    //     let a = ProductService.getProducts();
-    //     console.log(a);
-    // })
     const products = [
         {
             id: 1,

@@ -1,6 +1,5 @@
 import '../assets/css/Home.css'
 import Product from './Product'
-
 function Home() {
     const category = [
         {
@@ -17,7 +16,7 @@ function Home() {
         }
     ];
     return (
-        <div className="container">
+        <div className="container" id="content">
             {category.map((cat) =>
                 <Product name={cat.name} />
             )}

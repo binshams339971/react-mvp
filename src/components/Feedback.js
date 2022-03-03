@@ -2,7 +2,7 @@ import '../assets/css/Feedback.css';
 import { Link } from "react-router-dom";
 function Feedback() {
     return (
-        <div className="container">
+        <div className="container" id="content">
             <div className='d-flex justify-content-between'>
                 <Link to="/">
                     <span class="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>

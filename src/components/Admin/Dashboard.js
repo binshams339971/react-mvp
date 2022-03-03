@@ -20,29 +20,29 @@ function Dashboard() {
                             <h3 className=''></h3>
                         </div>
                         <div className='dashboard-card__container'>
-                            <div class='dashboard-card'>
-                                <h2 class='dashboard-card__title'>
+                            <div className='dashboard-card'>
+                                <h2 className='dashboard-card__title'>
                                     Total User
                                 </h2>
-                                <p class='dashboard-card__detail'>
+                                <p className='dashboard-card__detail'>
                                     6.3K
                                 </p>
                             </div>
 
-                            <div class='dashboard-card'>
-                                <h2 class='dashboard-card__title'>
+                            <div className='dashboard-card'>
+                                <h2 className='dashboard-card__title'>
                                     Total Item
                                 </h2>
-                                <p class='dashboard-card__detail'>
+                                <p className='dashboard-card__detail'>
                                     16K
                                 </p>
                             </div>
 
-                            <div class='dashboard-card'>
-                                <h2 class='dashboard-card__title'>
+                            <div className='dashboard-card'>
+                                <h2 className='dashboard-card__title'>
                                     Total Share
                                 </h2>
-                                <p class='dashboard-card__detail'>
+                                <p className='dashboard-card__detail'>
                                     43K
                                 </p>
                             </div>

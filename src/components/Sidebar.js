@@ -2,13 +2,19 @@ import '../assets/css/Sidebar.css';
 import { motion } from "framer-motion"
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import { useEffect } from 'react';
 function Sidebar(props) {
     const [isActive, setActive] = useState(false);
+    const [bodyHeight, setBodyHeight] = useState(0);
     const toggleClass = () => {
         setActive(!isActive);
     };
+    useEffect(() => {
+        let x = window.document.body.offsetHeight - 420;
+        setBodyHeight(x);
+    });
     return (
-        <motion.div className="side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }}>
+        <motion.div className="row side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }} style={{ height: bodyHeight }}>
             <h2 className="cat-header">Categories</h2>
             <ul className="cat-list">
                 <a onClick={toggleClass}><li><i className="fa-solid fa-headset"></i>Electronics</li></a>

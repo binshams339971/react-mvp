@@ -8,6 +8,12 @@ export class ApiCore {
       };
     }
 
+    if (options.getCount) {
+      this.getCount = (requestConfig) => {
+        return apiProvider.getCount(options.url, requestConfig);
+      };
+    }
+
     if (options.getById) {
       this.getById = (id, requestConfig) => {
         return apiProvider.getById(options.url, id, requestConfig);
