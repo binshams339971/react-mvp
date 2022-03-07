@@ -13,12 +13,13 @@ function Home() {
         {
             id: 3,
             name: "TV",
-        }
+        },
     ];
     return (
         <div className="container" id="content">
+            {/* <Product /> */}
             {category.map((cat) =>
-                <Product name={cat.name} />
+                <Product name={cat.name} key={cat.id} />
             )}
         </div>
 

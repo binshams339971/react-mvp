@@ -67,10 +67,14 @@
 
 .signOut a:hover{
     text-decoration: none;
+    cursor: pointer;
 }
 
 .bar{
     display: none;
+}
+.dash{
+  padding: 20px 80px;
 }
 
 @media only screen and (max-width: 770px) {
@@ -80,6 +84,9 @@
     .sideMenu2{
       display: block;
       position: absolute;
+    }
+    .dash{
+      padding: 20px 20px;
     }
   }
 

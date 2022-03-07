@@ -1,9 +1,43 @@
 import '../assets/css/Signin.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import art from '../assets/images/art.png'
 import logo2 from '../assets/images/logo2.png'
-
+import { useEffect, useState } from 'react';
+import authService from '../services/AuthService.js';
+import { isLoggedIn } from '../helpers/authHelper';
 function Signin() {
+    let navigate = useNavigate();
+    useEffect(() => {
+        if (isLoggedIn()) {
+            navigate('/admins/dashboard');
+        }
+    })
+    const [inputField, setInputField] = useState({
+        username: '',
+        password: ''
+    })
+    const inputsHandler = (e) => {
+        const { name, value } = e.target;
+        setInputField((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+
+    const submitButton = () => {
+        authService.login({ username: inputField.username, password: inputField.password }).then((res) => {
+            if (res.status === 'success') {
+                // alert("Login");
+                //need to show login successfull message
+                navigate("/admins/dashboard");
+            } else {
+                //need to show failed message
+                alert("Failed");
+            }
+        }).catch((error) => {
+            alert(error);
+        })
+    }
     return (
         <div className="container" id="content">
             <div className="row">
@@ -22,9 +56,9 @@ function Signin() {
                         </Link>
                         <div className='signin d-block'>
                             <p>Username</p>
-                            <input type="text" id="ip2" />
+                            <input type="text" id="ip2" name="username" onChange={inputsHandler} value={inputField.username} />
                             <p>Password</p>
-                            <input type="password" id="ip3" />
+                            <input type="password" id="ip3" name="password" onChange={inputsHandler} value={inputField.password} />
                             <div className='d-flex justify-content-between'>
                                 <div className="form-group">
                                     <input type="checkbox" id="check" />
@@ -32,7 +66,7 @@ function Signin() {
                                 </div>
                                 <a href="#" className='forgot'>Forgot Password?</a>
                             </div>
-                            <Link to="/admin/dashboard" className="btn0 btn--action">Sign in</Link>
+                            <button onClick={submitButton} className="btn0 btn--action" >Sign in</button>
                         </div>
                         <h3 className=''></h3>
                     </div>

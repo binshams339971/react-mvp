@@ -1,16 +1,16 @@
-import apiProducts from './api/ProductAPI';
-import productMapper from '../mapper/ProductMapper';
+import apiUsers from './api/UserAPI';
+import userMapper from '../mapper/UserMapper';
 
-const productService = {
-    getProducts: async (query) => { 
+const userService = {
+    getUsers: async (query) => { 
         const requestConfig = {
             params: query
         }
         try {
-            return apiProducts.getAll(requestConfig).then((data) => {
+            return apiUsers.getAll(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProducts(data)
+                    data: userMapper.mapUsers(data)
                 };
 
             }).catch((error) => {
@@ -30,12 +30,12 @@ const productService = {
             };
         }
     },
-    getProductById: async (id) => { 
+    getUserById: async (id) => { 
         try {
-            return apiProducts.getById(id).then((data) => {
+            return apiUsers.getById(id).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: userMapper.mapUser(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -54,15 +54,15 @@ const productService = {
             };
         }
     },
-    insertProduct: async (body) => {
+    insertUser: async (body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.post(requestConfig).then((data) => {
+            return apiUsers.post(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: userMapper.mapUser(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -81,16 +81,17 @@ const productService = {
             };
         }
     },
-    updateProduct: async (id, body) => {
+    getCount: async (query) => {
         const requestConfig = {
-            data: body
+            params: query
         }
         try {
-            return apiProducts.put(id, requestConfig).then((data) => {
+            return apiUsers.getCount(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    count: data
                 };
+
             }).catch((error) => {
                 if(error?.data){
                     throw { ...error.data, statusCode: error.status };
@@ -110,4 +111,5 @@ const productService = {
     }
 }
 
-export default productService;
+export default userService;
+

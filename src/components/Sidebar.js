@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import { useEffect } from 'react';
+import { isLoggedIn } from '../helpers/authHelper';
 function Sidebar(props) {
     const [isActive, setActive] = useState(false);
     const [bodyHeight, setBodyHeight] = useState(0);
@@ -34,8 +35,8 @@ function Sidebar(props) {
                 <li><i className="fa-solid fa-headset"></i>Electronics</li>
                 <hr />
             </ul>
-            <div className='text-center' style={{ marginTop: "450px" }}>
-                <Link to='/signin' className="sign-in-btn">Sign in</Link>
+            <div className='text-center' style={{ marginTop: "450px", marginBottom: "30px" }}>
+                {isLoggedIn() ? <Link to='/admins/dashboard' className='sign-in-btn'>Dashboard</Link> : <Link to='/signin' className='sign-in-btn'>Sign in</Link>}
             </div>
         </motion.div >
     )

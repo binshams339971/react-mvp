@@ -1,113 +1,113 @@
-import apiProducts from './api/ProductAPI';
-import productMapper from '../mapper/ProductMapper';
+import apiSubCategories from './api/SubCategoryAPI';
+import subCategoryMapper from '../mapper/SubCategoryMapper';
 
-const productService = {
-    getProducts: async (query) => { 
+const subCategoryService = {
+    getSubCategories: async (query) => {
         const requestConfig = {
             params: query
         }
         try {
-            return apiProducts.getAll(requestConfig).then((data) => {
+            return apiSubCategories.getAll(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProducts(data)
+                    data: subCategoryMapper.mapSubCategories(data)
                 };
 
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    getProductById: async (id) => { 
+    getSubCategoryById: async (id) => {
         try {
-            return apiProducts.getById(id).then((data) => {
+            return apiSubCategories.getById(id).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: subCategoryMapper.mapSubCategory(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    insertProduct: async (body) => {
+    insertSubCategory: async (body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.post(requestConfig).then((data) => {
+            return apiSubCategories.post(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: subCategoryMapper.mapSubCategory(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    updateProduct: async (id, body) => {
+    updateSubCategory: async (id, body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.put(id, requestConfig).then((data) => {
+            return apiSubCategories.put(id, requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: subCategoryMapper.mapSubCategory(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     }
 }
 
-export default productService;
+export default subCategoryService;

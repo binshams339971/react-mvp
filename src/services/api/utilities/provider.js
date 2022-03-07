@@ -10,7 +10,7 @@ const BASE_URL = config.API_BASE_URL;
 const getAll = (resource, requestConfig) => {
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
@@ -25,7 +25,7 @@ const getAll = (resource, requestConfig) => {
 const getCount = (resource, requestConfig) => {
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
@@ -40,7 +40,7 @@ const getCount = (resource, requestConfig) => {
 const getById = (resource, id, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
@@ -55,7 +55,7 @@ const getById = (resource, id, requestConfig) => {
 const get = (resource, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
@@ -70,7 +70,7 @@ const get = (resource, requestConfig) => {
 const post = (resource, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'multipart/form-data',
       ...requestConfig?.headers
     },
@@ -85,7 +85,7 @@ const post = (resource, requestConfig) => {
 const put = (resource, id, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'multipart/form-data',
       ...requestConfig?.headers
     },
@@ -100,7 +100,7 @@ const put = (resource, id, requestConfig) => {
 const patch = (resource, id, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'multipart/form-data',
       ...requestConfig?.headers
     },
@@ -115,7 +115,7 @@ const patch = (resource, id, requestConfig) => {
 const remove = (resource, id, requestConfig) => { 
   requestConfig = {
     headers: {
-      'Authrization': `Bearer ${bearerToken}`,
+      'Authorization': `Bearer ${bearerToken}`,
       'Content-Type': 'application/json',
       ...requestConfig?.headers
     },

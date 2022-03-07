@@ -12,5 +12,8 @@ export function handleError(error) {
     if (error.data) {
         throw error.data;
     }
+    if(error.response){
+        throw error.response;
+    };
     throw error;
 }

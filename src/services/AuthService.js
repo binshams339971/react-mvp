@@ -4,7 +4,7 @@ import apiAuth from './api/AuthAPI';
 const authService = {
     login : async ({ username, password }) => {
         try {
-            apiAuth.login({ username, password }).then((data) => {
+            return apiAuth.login({ username, password }).then((data) => {
                 if(data.status === 'success'){
                     login(data.data);
                     return {
@@ -17,14 +17,20 @@ const authService = {
                     }
                 }
             }).catch((error) => {
-                return {
-                    status: 'failed'
+                if(error?.data){
+                    throw { ...error.data, statusCode: error.status };
+                }else{
+                    throw {
+                        status: 'failed',
+                        errors: [ error ]
+                    };
                 }
             }); 
         } catch (error) {
-            return {
-                status: 'failed'
-            }
+            throw {
+                status: 'failed',
+                errors: [ error ]
+            };
         }
     }
 }

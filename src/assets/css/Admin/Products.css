@@ -64,9 +64,21 @@ input:focus{
     font-weight: 500;
 }
 
+.brand{
+    width: 50%;
+    margin-left: 82px;
+    font-size: 18px;
+    background: rgba(50, 86, 84, 0.93);
+    border: 1px solid rgba(50, 86, 84, 0.93);
+    display: inline-block;
+    padding: 3px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .inputs .itemName{
-    margin-left: 55px;
-    width: 60%;
+    margin-left: 10px;
+    width: 50%;
     background: rgba(50, 86, 84, 0.93);
     border-radius: 10px;
     border: none;
@@ -76,20 +88,9 @@ input:focus{
     margin-bottom: 20px;
 }
 
-.inputs .price{
-    margin-left: 63px;
-    width: 60%;
-    background: rgba(50, 86, 84, 0.93);
-    border-radius: 10px;
-    border: none;
-    color: white;
-    padding-left: 15px;
-    height: 35px;
-    margin-bottom: 20px;
-}
 .inputs .description{
-    margin-left: 10px;
-    width: 60%;
+    margin-left: 35px;
+    width: 50%;
     background: rgba(50, 86, 84, 0.93);
     border-radius: 10px;
     border: none;
@@ -98,6 +99,31 @@ input:focus{
     height: 55px;
     margin-bottom: 20px;
 }
+
+.category{
+    width: 50%;
+    margin-left: 55px;
+    font-size: 18px;
+    background: rgba(50, 86, 84, 0.93);
+    border: 1px solid rgba(50, 86, 84, 0.93);
+    display: inline-block;
+    padding: 3px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.subcategory{
+    width: 50%;
+    margin-left: 20px;
+    font-size: 18px;
+    background: rgba(50, 86, 84, 0.93);
+    border: 1px solid rgba(50, 86, 84, 0.93);
+    display: inline-block;
+    padding: 3px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .inputs .video{
     margin-left: 55px;
     border-radius: 10px;
@@ -111,7 +137,7 @@ input[type="file"] {
 }
 
 .custom-file-upload1 {
-    margin-left: 55px;
+    margin-left: 80px;
     border-radius: 10px;
     background: #807f7f;
     border: 1px solid #ccc;
@@ -121,7 +147,7 @@ input[type="file"] {
 }
 
 .custom-file-upload2 {
-    margin-left: 20px;
+    margin-left: 45px;
     border-radius: 10px;
     background: #807f7f;
     border: 1px solid #ccc;
@@ -129,3 +155,6 @@ input[type="file"] {
     padding: 3px 20px;
     cursor: pointer;
 }
+
+
+

@@ -1,17 +1,17 @@
 import { ApiCore } from "./utilities/core";
 import apiProvider from './utilities/provider';
 
-const url = 'referrals';
-const plural = 'referrals';
-const single = 'referral';
+const url = 'videos';
+const plural = 'videos';
+const single = 'video';
 
 // plural and single may be used for message logic if needed in the ApiCore class.
 
-const apiReferrals = new ApiCore({
-    getAll: true,
-    getCount: true,
-    getById: true,
-    post: true,
+const apiVideos = new ApiCore({
+    getAll: false,
+    getCount: false,
+    getById: false,
+    post: false,
     put: false,
     patch: false,
     delete: false,
@@ -21,8 +21,8 @@ const apiReferrals = new ApiCore({
 });
 
 // Add custom api call logic here
-apiReferrals.newClick = (body) => {
-    return apiProvider.post(`/${url}/click`, body);
+apiVideos.stream = (query) => {
+    return apiProvider.get(`/${url}/stream`, query);
 };
 
-export default apiReferrals;
+export default apiVideos;

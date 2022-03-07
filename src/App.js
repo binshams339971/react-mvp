@@ -11,6 +11,7 @@ import Dashboard from './components/Admin/Dashboard';
 import Products from './components/Admin/Products';
 import Users from './components/Admin/Users';
 import UserDetails from 'components/Admin/UserDetails.js';
+import PrivateOutlet from 'components/PrivateOutlet.js';
 function App() {
   return (
     <div className="App">
@@ -22,10 +23,17 @@ function App() {
           <Route path='/information' element={<Information />} />
           <Route path='/feedback' element={<Feedback />} />
           <Route path='/signin' element={<Signin />} />
-          <Route path='/admin/dashboard' element={<Dashboard />} />
+          {/* <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route path='/admin/products' element={<Products />} />
           <Route path='/admin/users' element={<Users />} />
           <Route path='/admin/users/:uId' element={<UserDetails />} />
+          <Route path='/admin/table' element={<CustomPaginationActionsTable />} /> */}
+          <Route path='/admins/*' element={<PrivateOutlet />}>
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='products' element={<Products />} />
+            <Route path='users' element={<Users />} />
+            <Route path='users/:uId' element={<UserDetails />} />
+          </Route>
           <Route path="*" element={
             <main style={{ padding: "1rem" }}>
               <p>There's nothing here!</p>

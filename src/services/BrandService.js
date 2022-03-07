@@ -1,16 +1,16 @@
-import apiProducts from './api/ProductAPI';
-import productMapper from '../mapper/ProductMapper';
+import apiBrands from './api/BrandAPI';
+import brandMapper from '../mapper/BrandMapper';
 
-const productService = {
-    getProducts: async (query) => { 
+const brandService = {
+    getBrands: async (query) => { 
         const requestConfig = {
             params: query
         }
         try {
-            return apiProducts.getAll(requestConfig).then((data) => {
+            return apiBrands.getAll(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProducts(data)
+                    data: brandMapper.mapBrands(data)
                 };
 
             }).catch((error) => {
@@ -30,12 +30,12 @@ const productService = {
             };
         }
     },
-    getProductById: async (id) => { 
+    getBrandById: async (id) => { 
         try {
-            return apiProducts.getById(id).then((data) => {
+            return apiBrands.getById(id).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -54,15 +54,15 @@ const productService = {
             };
         }
     },
-    insertProduct: async (body) => {
+    insertBrand: async (body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.post(requestConfig).then((data) => {
+            return apiBrands.post(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -81,15 +81,15 @@ const productService = {
             };
         }
     },
-    updateProduct: async (id, body) => {
+    updateBrand: async (id, body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.put(id, requestConfig).then((data) => {
+            return apiBrands.put(id, requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -110,4 +110,5 @@ const productService = {
     }
 }
 
-export default productService;
+export default brandService;
+

@@ -1,16 +1,16 @@
-import apiProducts from './api/ProductAPI';
-import productMapper from '../mapper/ProductMapper';
+import apiCategories from './api/CategoryAPI';
+import categoryMapper from '../mapper/CategoryMapper';
 
-const productService = {
-    getProducts: async (query) => { 
+const categoryService = {
+    getCategories: async (query) => { 
         const requestConfig = {
             params: query
         }
         try {
-            return apiProducts.getAll(requestConfig).then((data) => {
+            return apiCategories.getAll(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProducts(data)
+                    data: categoryMapper.mapCategories(data)
                 };
 
             }).catch((error) => {
@@ -30,12 +30,12 @@ const productService = {
             };
         }
     },
-    getProductById: async (id) => { 
+    getCategoryById: async (id) => { 
         try {
-            return apiProducts.getById(id).then((data) => {
+            return apiCategories.getById(id).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: categoryMapper.mapCategory(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -54,15 +54,15 @@ const productService = {
             };
         }
     },
-    insertProduct: async (body) => {
+    insertCategory: async (body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.post(requestConfig).then((data) => {
+            return apiCategories.post(requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: categoryMapper.mapCategory(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -81,15 +81,15 @@ const productService = {
             };
         }
     },
-    updateProduct: async (id, body) => {
+    updateCategory: async (id, body) => {
         const requestConfig = {
             data: body
         }
         try {
-            return apiProducts.put(id, requestConfig).then((data) => {
+            return apiCategories.put(id, requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: productMapper.mapProduct(data)
+                    data: categoryMapper.mapCategory(data)
                 };
             }).catch((error) => {
                 if(error?.data){
@@ -110,4 +110,5 @@ const productService = {
     }
 }
 
-export default productService;
+export default categoryService;
+

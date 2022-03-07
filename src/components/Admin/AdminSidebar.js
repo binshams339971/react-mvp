@@ -1,18 +1,23 @@
 import '../../assets/css/Admin/AdminSidebar.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { logout } from '../../helpers/authHelper';
 function AdminSidebar() {
-
+    let navigate = useNavigate();
+    const signOutButton = () => {
+        logout();
+        navigate('/');
+    }
     return (
-        <div class="col-md-3 sideMenu">
-            <h3 class="menuHeader">Categories</h3>
-            <ul class="catList">
-                <NavLink to="/admin/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>Dashboard</li></NavLink>
-                <NavLink to="/admin/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
-                <NavLink to="/admin/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
+        <div className="col-md-3 sideMenu">
+            <h3 className="menuHeader">Categories</h3>
+            <ul className="catList">
+                <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>Dashboard</li></NavLink>
+                <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
+                <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
             </ul>
-            <div class='signOut text-center'>
-                <a href='#' class="signOutBtn">Sign in</a>
+            <div className='signOut text-center'>
+                <a onClick={signOutButton} className="signOutBtn">Sign out</a>
             </div>
         </div>
     )

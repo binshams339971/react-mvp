@@ -1,5 +1,6 @@
-import CategoryModel from "./CategoryModel";
-import SubCategoryModel from "./SubCategoryModel";
+import categoryMapper from '../mapper/CategoryMapper';
+import subCategoryMapper from '../mapper/SubCategoryMapper';
+import referralMapper from '../mapper/ReferralMapper';
 class ProductModel
 {
     constructor({
@@ -16,7 +17,12 @@ class ProductModel
         createdAt,
         updatedAt,
         Category,
-        SubCategory
+        SubCategory,
+        Referrals,
+        CategoryCount,
+        SubCategoryCount,
+        ReferralsCount,
+        ReferralsDistinctCount
     }){ 
         this.id = id;
         this.identifier = identifier;
@@ -31,20 +37,34 @@ class ProductModel
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         if(Category && Array.isArray(Category)){
-            this.Category = [];
-            Category.forEach((element)=>{
-                this.Category.push(new CategoryModel(element));
-            });
+            this.Category = categoryMapper.mapCategories(Category);
         }else if(Category && typeof Category == 'object'){
-            this.Category = new CategoryModel(Category);
+            this.Category = categoryMapper.mapCategory(Category);
         }
         if(SubCategory && Array.isArray(SubCategory)){
-            this.SubCategory = [];
-            SubCategory.forEach((element)=>{
-                this.SubCategory.push(new SubCategoryModel(element));
-            });
+            this.SubCategory = subCategoryMapper.mapSubCategories(SubCategory);
         }else if(SubCategory && typeof SubCategory == 'object'){
-            this.SubCategory = new SubCategoryModel(SubCategory);
+            this.SubCategory = subCategoryMapper.mapSubCategory(SubCategory);
+        }
+        if(Referrals && Array.isArray(Referrals)){
+            this.Referrals = referralMapper.mapReferrals(Referrals);
+        }else if(Referrals && typeof Referrals == 'object'){
+            this.Referrals = referralMapper.mapReferral(Referrals);
+        }
+        if(CategoryCount >=0 || SubCategoryCount >=0 || ReferralsCount >=0 || ReferralsDistinctCount >= 0){
+            this.includedCount = {};
+        }
+        if(CategoryCount >=0){
+            this.includedCount.Category = CategoryCount;
+        }
+        if(SubCategoryCount >=0){
+            this.includedCount.SubCategory = SubCategoryCount;
+        }
+        if(ReferralsCount >=0){
+            this.includedCount.Referrals = ReferralsCount;
+        }
+        if(ReferralsDistinctCount >= 0){
+            this.includedCount.ReferralsDistinctCount = ReferralsDistinctCount;
         }
      }
 }

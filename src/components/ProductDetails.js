@@ -7,11 +7,45 @@ import icon1 from '../assets/images/love.svg';
 import icon2 from '../assets/images/share.svg';
 import icon3 from '../assets/images/comment.svg';
 import { Link, useParams } from "react-router-dom";
+import productService from '../services/ProductService.js';
+import fileService from '../services/FileService.js';
 export default function ProductDetails() {
-    // let id = useParams();
-    // useEffect(() => {
-    //     console.log(id);
-    // }, []);
+    let id = useParams();
+    let [prod, setProd] = useState();
+    let [video, setVideo] = useState();
+    useEffect(() => {
+        productService.getProductById(id.pId).then((product) => {
+            if (product.status == 'success') {
+                setProd(product.data);
+                fileService.getVideoStreamingURL(product.data.video_src).then((vid) => {
+                    if (vid.status == 'success') {
+                        setVideo(vid.url);
+                    }
+                });
+            } else {
+
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+    const [inputField, setInputField] = useState({
+        name: '',
+        email: '',
+        phone: ''
+    })
+    const inputsHandler = (e) => {
+        const { name, value } = e.target;
+        setInputField((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+
+    const submitButton = () => {
+        alert(inputField.phone);
+    }
     return (
         <div className='container' id="content">
             <div className='d-flex justify-content-between'>
@@ -20,16 +54,16 @@ export default function ProductDetails() {
                         keyboard_backspace
                     </span>
                 </Link>
-                <h3 className='' style={{ color: "#4A4A4A", fontSize: "36px" }}>ACER</h3>
+                <h3 className='' style={{ color: "#4A4A4A", fontSize: "36px" }}>{prod?.name}</h3>
                 <h3 className=''></h3>
             </div>
 
             <div className='d-flex justify-content-center mb-4 mt-md-3 mt-0'>
-                <ReactPlayer controls url='https://media.w3.org/2010/05/sintel/trailer_hd.mp4' playing={false} />
+                <ReactPlayer controls url={video} playing={false} />
             </div>
 
             <div className="d-flex mx-5">
-                <h3 className='' style={{ color: "#4A4A4A", fontSize: "28px" }}>ACER ASPIRE 3</h3>
+                <h3 className='' style={{ color: "#4A4A4A", fontSize: "28px" }}>{prod?.sub_info}</h3>
                 <div className="ml-auto my-auto mr-4">
                     <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
                         <span class="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
@@ -90,10 +124,13 @@ export default function ProductDetails() {
                             </button>
                             <h3 className="text-center mt-4">Submit your info</h3>
                             <div className="mt-2 text-center infos">
-                                <input type="text" placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-                                <input type="text" placeholder="youremail@email.com" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-                                <input type="text" placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-                                <button type="submit" className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>Submit</button>
+                                <input type="text" name="name" onChange={inputsHandler} value={inputField.name} placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                <input type="text" name="email" onChange={inputsHandler} value={inputField.email} placeholder="youremail@email.com" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                <input type="text" name="phone" onChange={inputsHandler} value={inputField.phone} placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>Submit</button>
                             </div>
                         </div>
                     </div>
