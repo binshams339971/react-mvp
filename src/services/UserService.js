@@ -2,7 +2,7 @@ import apiUsers from './api/UserAPI';
 import userMapper from '../mapper/UserMapper';
 
 const userService = {
-    getUsers: async (query) => { 
+    getUsers: async (query) => {
         const requestConfig = {
             params: query
         }
@@ -14,23 +14,23 @@ const userService = {
                 };
 
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    getUserById: async (id) => { 
+    getUserById: async (id) => {
         try {
             return apiUsers.getById(id).then((data) => {
                 return {
@@ -38,46 +38,45 @@ const userService = {
                     data: userMapper.mapUser(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
     insertUser: async (body) => {
-        const requestConfig = {
-            data: body
-        }
+        const requestConfig = {}
         try {
-            return apiUsers.post(requestConfig).then((data) => {
+            return apiUsers.post(body, requestConfig).then((data) => {
+
                 return {
                     status: 'success',
                     data: userMapper.mapUser(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
@@ -93,19 +92,19 @@ const userService = {
                 };
 
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     }

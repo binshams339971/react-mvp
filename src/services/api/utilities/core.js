@@ -21,20 +21,20 @@ export class ApiCore {
     }
 
     if (options.post) {
-      this.post = (requestConfig) => {
-        return apiProvider.post(options.url, requestConfig);
+      this.post = (body, requestConfig) => {
+        return apiProvider.post(options.url, body, requestConfig);
       };
     }
 
     if (options.put) {
-      this.put = (id, requestConfig) => {
-        return apiProvider.put(options.url, id, requestConfig);
+      this.put = (id, body, requestConfig) => {
+        return apiProvider.put(options.url, id, body, requestConfig);
       };
     }
 
     if (options.patch) {
-      this.patch = (id, requestConfig) => {
-        return apiProvider.patch(options.url, id, requestConfig);
+      this.patch = (id, body, requestConfig) => {
+        return apiProvider.patch(options.url, id, body, requestConfig);
       };
     }
 

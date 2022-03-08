@@ -1,14 +1,15 @@
 import jwt_decode from "jwt-decode";
 
 export const bearerToken = JSON.parse(localStorage.getItem('logged_in_info')) ? JSON.parse(localStorage.getItem('logged_in_info')).bearerToken : null;
-export const login = async (data) => {
+export const login = (data) => {
     localStorage.setItem('logged_in_info', JSON.stringify(data));
 };
 export const logout = () => {
-    return localStorage.removeItem('logged_in_info');
+    localStorage.removeItem('logged_in_info');
 };
-export const getCurrentUser = async () => {
-    return JSON.parse(localStorage.getItem('logged_in_info')) ? JSON.parse(localStorage.getItem('logged_in_info')) : null
+export const getCurrentUser = () => {
+    return JSON.parse(localStorage.getItem('logged_in_info')) ? JSON.parse(localStorage.getItem('logged_in_info')).user : null
+
 };
 export const isLoggedIn = () => {
     const logged_in_info = JSON.parse(localStorage.getItem('logged_in_info'));
@@ -18,7 +19,7 @@ export const isLoggedIn = () => {
         return false;
     }
 };
-export const isValidSession = async () => {
+export const isValidSession = () => {
     const logged_in_info = JSON.parse(localStorage.getItem('logged_in_info'));
     if (logged_in_info) {
         const decodedJwt = jwt_decode(logged_in_info.bearerToken);

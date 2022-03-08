@@ -56,10 +56,12 @@ const subCategoryService = {
     },
     insertSubCategory: async (body) => {
         const requestConfig = {
-            data: body
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiSubCategories.post(requestConfig).then((data) => {
+            return apiSubCategories.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: subCategoryMapper.mapSubCategory(data)
@@ -83,10 +85,12 @@ const subCategoryService = {
     },
     updateSubCategory: async (id, body) => {
         const requestConfig = {
-            data: body
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiSubCategories.put(id, requestConfig).then((data) => {
+            return apiSubCategories.put(id, body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: subCategoryMapper.mapSubCategory(data)

@@ -2,10 +2,22 @@ import '../../assets/css/Admin/AdminSidebar.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { logout } from '../../helpers/authHelper';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 function AdminSidebar() {
     let navigate = useNavigate();
     const signOutButton = () => {
         logout();
+        toast.success('Sign out successful!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
         navigate('/');
     }
     return (

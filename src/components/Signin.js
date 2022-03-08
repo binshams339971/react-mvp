@@ -5,8 +5,13 @@ import logo2 from '../assets/images/logo2.png'
 import { useEffect, useState } from 'react';
 import authService from '../services/AuthService.js';
 import { isLoggedIn } from '../helpers/authHelper';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 function Signin() {
     let navigate = useNavigate();
+    let [loading, setLoading] = useState(false);
     useEffect(() => {
         if (isLoggedIn()) {
             navigate('/admins/dashboard');
@@ -25,17 +30,44 @@ function Signin() {
     }
 
     const submitButton = () => {
+        setLoading(true);
         authService.login({ username: inputField.username, password: inputField.password }).then((res) => {
             if (res.status === 'success') {
-                // alert("Login");
-                //need to show login successfull message
+                setLoading(false);
+                toast.success('Sign in successful!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 navigate("/admins/dashboard");
+
             } else {
-                //need to show failed message
-                alert("Failed");
+                setLoading(false);
+                toast.error('Sign in failed!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         }).catch((error) => {
-            alert(error);
+            setLoading(false);
+            toast.error('Sign in failed!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         })
     }
     return (
@@ -66,7 +98,10 @@ function Signin() {
                                 </div>
                                 <a href="#" className='forgot'>Forgot Password?</a>
                             </div>
-                            <button onClick={submitButton} className="btn0 btn--action" >Sign in</button>
+                            <button onClick={submitButton} className="btn0 btn--action" >
+                                Sign in
+                                {loading && <CircularProgress size={16} style={{ 'color': 'yellow' }} className='ml-3' />}
+                            </button>
                         </div>
                         <h3 className=''></h3>
                     </div>

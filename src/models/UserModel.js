@@ -1,6 +1,7 @@
-import referralMapper from '../mapper/UserMapper';
-class UserModel {
-    constructor({ id, name, phone_number, email, createdAt, updatedAt, Referrals, ReferralsCount, ReferralsDistinctCount }) {
+import referralMapper from '../mapper/ReferralMapper';
+class UserModel 
+{
+    constructor({ id, name, phone_number, email, createdAt, updatedAt, Referrals, ReferralsCount, ReferralsDistinctCount }){
         this.id = id;
         this.name = name;
         this.phone_number = phone_number;

@@ -17,8 +17,8 @@ const apiAuth = new ApiCore({
 });
 
 // Add custom api call logic here
-apiAuth.login = (credentials) => {
-    return apiProvider.post(`/${url}/login`, credentials);
+apiAuth.login = (credentials, requestConfig) => {
+    return apiProvider.post(`/${url}/login`, credentials, requestConfig);
 }
 
 export default apiAuth;

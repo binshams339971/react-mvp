@@ -1,24 +1,62 @@
 import '../assets/css/Feedback.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import ReactStars from "react-rating-stars-component";
 import feedbackService from '../services/FeedbackService.js';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 function Feedback() {
+    let [loading, setLoading] = useState(false);
     let [rating, setRating] = useState(0);
     let [comment, setComment] = useState("");
     const [radio, setRadio] = useState(0);
     const ratingChanged = (newRating) => {
         setRating(newRating);
     };
-
+    let navigate = useNavigate();
     const submitButton = () => {
-        feedbackService.insertFeedback(rating, comment, radio).then((res) => {
-            console.log(res.status);
+        setLoading(true);
+        feedbackService.insertFeedback({ description: comment, rating: rating }).then((res) => {
             if (res.status == 'success') {
                 setRating(0);
                 setComment("");
                 setRadio(0);
+                setLoading(false);
+                toast.success('Feedback submitted successfuly!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                navigate('/');
+            } else {
+                setLoading(false);
+                toast.error('Feedback submission failed!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
+        }).catch((err) => {
+            setLoading(false);
+            toast.error('Feedback submission failed!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         })
     }
     //console.log(radio);
@@ -67,7 +105,10 @@ function Feedback() {
                     </div>
                 </div>
                 <br />
-                <button className="send-btn" onClick={submitButton}>Send Now</button>
+                <button className="send-btn" onClick={submitButton}>
+                    Send Now
+                    {loading && <CircularProgress size={26} style={{ 'color': 'yellow' }} className='ml-3' />}
+                </button>
             </div>
         </div >
     )

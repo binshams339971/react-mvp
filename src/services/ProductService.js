@@ -55,11 +55,13 @@ const productService = {
         }
     },
     insertProduct: async (body) => {
-        const requestConfig = {
-            data: body
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiProducts.post(requestConfig).then((data) => {
+            return apiProducts.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: productMapper.mapProduct(data)
@@ -82,11 +84,13 @@ const productService = {
         }
     },
     updateProduct: async (id, body) => {
-        const requestConfig = {
-            data: body
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiProducts.put(id, requestConfig).then((data) => {
+            return apiProducts.put(id, body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: productMapper.mapProduct(data)

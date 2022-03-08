@@ -55,11 +55,13 @@ const brandService = {
         }
     },
     insertBrand: async (body) => {
-        const requestConfig = {
-            data: body
-        }
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
         try {
-            return apiBrands.post(requestConfig).then((data) => {
+            return apiBrands.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: brandMapper.mapbrand(data)
@@ -82,11 +84,13 @@ const brandService = {
         }
     },
     updateBrand: async (id, body) => {
-        const requestConfig = {
-            data: body
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiBrands.put(id, requestConfig).then((data) => {
+            return apiBrands.put(id, body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: brandMapper.mapbrand(data)

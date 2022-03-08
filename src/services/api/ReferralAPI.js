@@ -21,8 +21,8 @@ const apiReferrals = new ApiCore({
 });
 
 // Add custom api call logic here
-apiReferrals.newClick = (body) => {
-    return apiProvider.post(`/${url}/click`, body);
+apiReferrals.newClick = (body, requestConfig) => {
+    return apiProvider.post(`/${url}/click`, body, requestConfig);
 };
 
 export default apiReferrals;

@@ -55,11 +55,9 @@ const referralService = {
         }
     },
     insertReferral: async (body) => {
-        const requestConfig = {
-            data: body
-        }
+        const requestConfig = {}
         try {
-            return apiReferrals.post(requestConfig).then((data) => {
+            return apiReferrals.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: referralMapper.mapReferral(data)
@@ -110,13 +108,9 @@ const referralService = {
         }
     },
     registerClick: async ({ referral_token }) => {
-        const requestConfig = {
-            data: {
-                referral_token
-            }
-        }
+        const requestConfig = {}
         try {
-            return apiReferrals.newClick(requestConfig).then((data) => {
+            return apiReferrals.newClick({ referral_token }, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: referralMapper.mapReferral(data)

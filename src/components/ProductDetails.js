@@ -6,11 +6,17 @@ import img2 from '../assets/images/primary-play.svg';
 import icon1 from '../assets/images/love.svg';
 import icon2 from '../assets/images/share.svg';
 import icon3 from '../assets/images/comment.svg';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import productService from '../services/ProductService.js';
 import fileService from '../services/FileService.js';
+import userService from '../services/UserService.js';
+import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 export default function ProductDetails() {
     let id = useParams();
+    let [loading, setLoading] = useState(false);
     let [prod, setProd] = useState();
     let [video, setVideo] = useState();
     useEffect(() => {
@@ -42,15 +48,55 @@ export default function ProductDetails() {
             [name]: value,
         }));
     }
-
     const submitButton = () => {
-        alert(inputField.phone);
+        setLoading(true);
+        userService.insertUser({ name: inputField.name, email: inputField.email, phone_number: inputField.phone }).then((res) => {
+            if (res.status == 'success') {
+                console.log(res.data);
+                setInputField({ name: '', email: '', phone: '' });
+                setLoading(false);
+                document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
+                document.querySelectorAll(".modal-backdrop")
+                    .forEach(el => el.classList.remove("modal-backdrop"));
+                toast.success('Submitted successfuly!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else {
+                setLoading(false);
+                toast.error('Submission failed!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        }).catch((err) => {
+            setLoading(false);
+            toast.error('Submission failed!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        })
     }
     return (
         <div className='container' id="content">
             <div className='d-flex justify-content-between'>
                 <Link to="/">
-                    <span class="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
+                    <span className="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
                         keyboard_backspace
                     </span>
                 </Link>
@@ -66,17 +112,17 @@ export default function ProductDetails() {
                 <h3 className='' style={{ color: "#4A4A4A", fontSize: "28px" }}>{prod?.sub_info}</h3>
                 <div className="ml-auto my-auto mr-4">
                     <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
-                        <span class="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
+                        <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                             favorite_border
                         </span>
                     </a>
                     <a href="#" data-toggle="modal" data-target="#submitModal">
-                        <span class="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
+                        <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                             share
                         </span>
                     </a>
                     <a href="#">
-                        <span class="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
+                        <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                             chat_bubble_outline
                         </span>
                     </a>
@@ -130,7 +176,10 @@ export default function ProductDetails() {
 
                                 <input type="text" name="phone" onChange={inputsHandler} value={inputField.phone} placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
 
-                                <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>Submit</button>
+                                <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>
+                                    Submit
+                                    {loading && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
+                                </button>
                             </div>
                         </div>
                     </div>

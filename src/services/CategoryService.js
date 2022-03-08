@@ -55,11 +55,13 @@ const categoryService = {
         }
     },
     insertCategory: async (body) => {
-        const requestConfig = {
-            data: body
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiCategories.post(requestConfig).then((data) => {
+            return apiCategories.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: categoryMapper.mapCategory(data)
@@ -82,11 +84,13 @@ const categoryService = {
         }
     },
     updateCategory: async (id, body) => {
-        const requestConfig = {
-            data: body
+        const requestConfig = { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         }
         try {
-            return apiCategories.put(id, requestConfig).then((data) => {
+            return apiCategories.put(id, body, requestConfig).then((data) => {
                 return {
                     status: 'success',
                     data: categoryMapper.mapCategory(data)

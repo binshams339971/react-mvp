@@ -4,7 +4,7 @@ import apiAuth from './api/AuthAPI';
 const authService = {
     login : async ({ username, password }) => {
         try {
-            return apiAuth.login({ username, password }).then((data) => {
+            return apiAuth.login({ username, password }, null).then((data) => {
                 if(data.status === 'success'){
                     login(data.data);
                     return {

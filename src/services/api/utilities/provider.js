@@ -67,47 +67,47 @@ const get = (resource, requestConfig) => {
     .catch(handleError); 
 }; 
 
-const post = (resource, requestConfig) => { 
+const post = (resource, data, requestConfig) => { 
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
     ...requestConfig
   };
   return axios 
-    .post(`${BASE_URL}/${resource}`, requestConfig) 
+    .post(`${BASE_URL}/${resource}`, data, requestConfig) 
     .then(handleResponse) 
     .catch(handleError); 
 }; 
 
-const put = (resource, id, requestConfig) => { 
+const put = (resource, id, data, requestConfig) => { 
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
     ...requestConfig
   };
   return axios 
-    .put(`${BASE_URL}/${resource}/${id}`, requestConfig) 
+    .put(`${BASE_URL}/${resource}/${id}`, data, requestConfig) 
     .then(handleResponse) 
     .catch(handleError); 
 }; 
 
-const patch = (resource, id, requestConfig) => { 
+const patch = (resource, id, data, requestConfig) => { 
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
       ...requestConfig?.headers
     },
     ...requestConfig
   };
   return axios 
-    .patch(`${BASE_URL}/${resource}/${id}`, requestConfig) 
+    .patch(`${BASE_URL}/${resource}/${id}`, data, requestConfig) 
     .then(handleResponse) 
     .catch(handleError); 
 }; 

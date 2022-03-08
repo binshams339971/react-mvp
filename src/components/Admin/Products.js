@@ -9,12 +9,14 @@ import subCategoryService from '../../services/SubCategoryService.js';
 import { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-
+let brand = '';
+let category = '';
+let subcategory = '';
 function Products() {
     const [prods, setProds] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loading2, setLoading2] = useState(true);
-    const [brands, setBrands] = useState([]);
+    const [brands, setBrands] = useState();
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     useEffect(() => {
@@ -48,21 +50,64 @@ function Products() {
         }).catch((error) => {
             console.log(error);
         });
-        subCategoryService.getSubCategories().then((subcats) => {
+
+    }, []);
+    useEffect(() => {
+        //console.log(brands);
+
+    }, [prods, brands, categories, subCategories]);
+
+    const [inputField, setInputField] = useState({
+        name: '',
+        description: '',
+        video: '',
+        thumbnail: '',
+        brand0: '',
+        cat0: '',
+        subcat0: ''
+    })
+
+    const inputsHandler = (e) => {
+        const { name, value } = e.target;
+        setInputField((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+
+    const addProduct = () => {
+        //setInputField({ name: '', description: '' });
+        console.log(inputField.name);
+        console.log(inputField.description);
+        console.log(brand);
+        console.log(category);
+        console.log(subcategory);
+    }
+
+    const brandHandler = (e) => {
+        brand = e.target.value;
+
+    }
+
+    const categoryHandler = (e) => {
+        let cat = e.target.value
+        subCategoryService.getSubCategories({ category_id: cat }).then((subcats) => {
             if (subcats.status == 'success') {
-                setSubCategories(subcats?.data);
-                setLoading(false);
+                //console.log(subcats.data);
+                setSubCategories(subcats.data);
+                category = e.target.value;
             } else {
                 console.log("Failed");
             }
         }).catch((error) => {
             console.log(error);
         });
-    }, []);
-    useEffect(() => {
-        console.log(brands);
+    }
 
-    }, [prods, brands, categories, subCategories]);
+    const subCategoryHandler = (e) => {
+        subcategory = e.target.value;
+    }
+
     return (
         <>
             {!loading ?
@@ -100,30 +145,27 @@ function Products() {
                                         <h2 className='text-center'>Add Item</h2>
                                         <div className='inputs'>
                                             <label className='nameLabel'>Brand<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='brand text-white'>
-                                                <option value="0">Select a brand</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">BMW</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">Audi</option>
+                                            <select name="brands" id="barnds" className='brand text-white' onChange={brandHandler}>
+                                                <option value="0">Select brand</option>
+                                                {brands?.map((b) => (
+                                                    <option key={b.id} value={b.id}>{b.name}</option>
+                                                ))}
                                             </select><br />
-                                            <label className='nameLabel'>Product Name<sup className='text-danger'>*</sup></label><input type="text" className="itemName" /><br />
-                                            <label className='desLabel'>Description<sup className='text-danger'>*</sup></label><input type="text" className="description" /><br />
+                                            <label className='nameLabel'>Product Name<sup className='text-danger'>*</sup></label><input type="text" className="itemName" name="name" onChange={inputsHandler} value={inputField.name} /><br />
+                                            <label className='desLabel'>Description<sup className='text-danger'>*</sup></label><input type="text" className="description" name="description" onChange={inputsHandler} value={inputField.description} /><br />
                                             <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='category text-white'>
+                                            <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler}>
                                                 <option value="0">Select a category</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">BMW</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">Audi</option>
+                                                {categories?.map((b) => (
+                                                    <option key={b.id} value={b.id}>{b.name}</option>
+                                                ))}
                                             </select><br />
                                             <label className='nameLabel'>Sub Category<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='subcategory text-white'>
+                                            <select name="brands" id="barnds" className='subcategory text-white' onChange={subCategoryHandler}>
                                                 <option value="0">Select a subcategory</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">BMW</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="volvo">Audi</option>
+                                                {subCategories?.map((b) => (
+                                                    <option key={b.id} value={b.id}>{b.name}</option>
+                                                ))}
                                             </select><br />
                                             <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
                                             <label className="custom-file-upload1 text-white">
@@ -135,12 +177,10 @@ function Products() {
                                                 <input type="file" />
                                                 Upload <i className="fa-solid fa-arrow-up"></i>
                                             </label><br />
-
                                         </div>
-
                                     </div>
                                     <div className="modal-footer">
-                                        <button className="addProducts">ADD PRODUCTS +</button>
+                                        <button onClick={addProduct} className="addProducts">ADD PRODUCTS +</button>
                                     </div>
                                 </div>
                             </div>

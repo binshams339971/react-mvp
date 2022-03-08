@@ -10,75 +10,53 @@ import { Link } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import productService from '../services/ProductService.js';
+import brandService from '../services/BrandService.js';
 import subCategoryService from '../services/SubCategoryService.js';
+import fileService from '../services/FileService.js';
 import { useEffect, useState } from 'react';
+
 function Product(props) {
-    let [product, setProduct] = useState();
+    let [product, setProduct] = useState([]);
     let [subCategory, setSubCategory] = useState([]);
+    let [brand, setBrand] = useState([]);
     let [loading, setLoading] = useState(true);
     let [loading2, setLoading2] = useState(true);
+    let [thumb, setThumb] = useState();
+
     useEffect(() => {
-        let mounted = true;
         productService.getProducts({ include: 'SubCategory' }).then((products) => {
-            if (products.status == 'success') {
-                if (mounted) {
-                    setProduct(products.data);
-                    setLoading(false);
-                }
+            if (products.status === 'success') {
+                products.data?.map((p) => {
+                    fileService.getFileURL(p.video_thumbnail_src).then((res) => {
+                        if (res.status == 'success') {
+                            p.video_thumbnail_src = res.url;
+                            setLoading(false);
+                        }
+                    });
+                })
+                setProduct(products.data);
+                setLoading(false);
             } else {
                 console.log("Failed");
             }
         }).catch((error) => {
             console.log(error);
         });
-        // subCategoryService.getSubCategories().then((subCat) => {
-        //     if (subCat.status == 'success') {
-        //         setSubCategory(subCat.data);
-        //         setLoading2(false);
-        //     } else {
-        //         console.log("Failed");
-        //     }
-        // })
     }, []);
 
     useEffect(() => {
-        console.log(product);
-    }, [product]);
+        brandService.getBrands().then((brands) => {
+            if (brands.status === 'success') {
+                setBrand(brands?.data);
+                setLoading(false);
+            } else {
+                console.log("Failed");
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
-    const products = [
-        {
-            id: 1,
-            img: acer1,
-        },
-        {
-            id: 2,
-            img: acer2,
-        },
-        {
-            id: 3,
-            img: acer3,
-        },
-        {
-            id: 4,
-            img: acer4,
-        },
-        {
-            id: 5,
-            img: acer5,
-        },
-        {
-            id: 6,
-            img: acer1,
-        },
-        {
-            id: 7,
-            img: acer5,
-        },
-        {
-            id: 8,
-            img: acer1,
-        },
-    ];
     const breakPoints = [
         { width: 1, itemsToShow: 1 },
         { width: 400, itemsToShow: 1 },
@@ -88,35 +66,18 @@ function Product(props) {
     ];
     return (
         <>
-            <div className='mt-5'>
-                <h3 style={{ marginLeft: "5%" }}>Sub Category Name</h3>
-                <Carousel breakPoints={breakPoints} >
-                    {products.map((product) =>
-                        <div className="cards" key={product.id}>
-                            <img className="card-img" src={product.img} />
-                            <div className="info">
-                                <span>ACER<br />ASPIRE 4</span><br />
-                                <Link to={`/details/${product.id}`} className="view_now-btn">View Now
-                                    <img src={playIcon} className="play-icon" />
-                                </Link>
-
-                            </div>
-                        </div>
-                    )
-                    }
-                </Carousel >
-            </div >
-            {/* {!loading ?
-                product?.map((sub) => {
-                    <div className='mt-5'>
-                        <h3 style={{ marginLeft: "5%" }}>S</h3>
+            {!loading ?
+                brand.map((b) =>
+                    <div className='mt-5' key={b.id}>
+                        <h3 style={{ marginLeft: "5%" }}>{b.name}</h3>
                         <Carousel breakPoints={breakPoints} >
-                            {products.map((product) =>
-                                <div className="cards" key={product.id}>
-                                    <img className="card-img" src={product.img} />
+                            {product?.map((p) =>
+                                b.id === p.brand_id &&
+                                <div className="cards" key={p.id}>
+                                    <img className="card-img" src={p.video_thumbnail_src} alt="abc" />
                                     <div className="info">
-                                        <span>ACER<br />ASPIRE 4</span><br />
-                                        <Link to={`/details/${product.id}`} className="view_now-btn">View Now
+                                        <span>{p.name}<br />{p.sub_info}</span><br />
+                                        <Link to={`/details/${p.id}`} className="view_now-btn">View Now
                                             <img src={playIcon} className="play-icon" />
                                         </Link>
 
@@ -126,15 +87,17 @@ function Product(props) {
                             }
                         </Carousel >
                     </div >
-                })
+                )
                 :
                 <div className='row'>
                     <Box sx={{ display: 'flex', margin: "auto", height: "500px" }}>
                         <CircularProgress color='success' />
                     </Box>
                 </div>
-            } */}
+            }
         </>
     )
 }
 export default Product;
+
+// src={`https://apimvp.deepchainlabs.com/${p.video_thumbnail_src}`}

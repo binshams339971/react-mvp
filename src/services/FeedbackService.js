@@ -3,29 +3,31 @@ import feedbackMapper from '../mapper/FeedbackMapper';
 
 const feedbackService = {
     insertFeedback: async (body) => {
-        const requestConfig = {
-            data: body
-        }
+        const requestConfig = {}
         try {
-            return apiFeedbacks.post(requestConfig).then((data) => {
+            return apiFeedbacks.post(body, requestConfig).then((data) => {
+                return {
+                    status: 'success',
+                    data: feedbackMapper.mapFeedback(data)
+                };
                 return {
                     status: 'success',
                     data: feedbackMapper.mapFeedback(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     }
