@@ -9,7 +9,9 @@ import ProductDetails from './components/ProductDetails.js';
 import Signin from './components/Signin.js';
 import Dashboard from './components/Admin/Dashboard';
 import Products from './components/Admin/Products';
+import ProductsDetails from 'components/Admin/ProductDetails.js';
 import Users from './components/Admin/Users';
+import Category from './components/Category';
 import UserDetails from 'components/Admin/UserDetails.js';
 import PrivateOutlet from 'components/PrivateOutlet.js';
 function App() {
@@ -23,6 +25,7 @@ function App() {
           <Route path='/information' element={<Information />} />
           <Route path='/feedback' element={<Feedback />} />
           <Route path='/signin' element={<Signin />} />
+          <Route path='/category/:cName/:cId' element={<Category />} />
           {/* <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route path='/admin/products' element={<Products />} />
           <Route path='/admin/users' element={<Users />} />
@@ -31,6 +34,7 @@ function App() {
           <Route path='/admins/*' element={<PrivateOutlet />}>
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='products' element={<Products />} />
+            <Route path='products/:pId' element={<ProductsDetails />} />
             <Route path='users' element={<Users />} />
             <Route path='users/:uId' element={<UserDetails />} />
           </Route>

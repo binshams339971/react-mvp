@@ -98,10 +98,9 @@ export default function CustomPaginationActionsTable(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
     let navigate = useNavigate();
     const handleItemClick = item => {
-        navigate(`/admins/products/${item}`);
+        navigate(`/admins/users/${item}`);
     }
 
     return (
@@ -109,9 +108,10 @@ export default function CustomPaginationActionsTable(props) {
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{ fontWeight: "bold" }}>ID</TableCell>
-                        <TableCell align="left">Product Name</TableCell>
-                        <TableCell align="left">Description</TableCell>
+                        <TableCell style={{ fontWeight: "bold" }}>User ID</TableCell>
+                        <TableCell align="left">User Name</TableCell>
+                        <TableCell align="left">Share Media</TableCell>
+                        <TableCell align="left">Count</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -127,7 +127,10 @@ export default function CustomPaginationActionsTable(props) {
                                 {row.name}
                             </TableCell>
                             <TableCell align="left">
-                                {row.description}
+                                {row.media}
+                            </TableCell>
+                            <TableCell align="left">
+                                {row.count}
                             </TableCell>
                         </TableRow>
                     ))}

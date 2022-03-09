@@ -1,40 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import ReactPlayer from "react-player";
 import AdminSidebar from './AdminSidebar';
-import { Link, useParams } from 'react-router-dom';
-import '../../assets/css/Admin/UserDetails.css';
-import { useState, useEffect } from 'react';
-import userService from '../../services/UserService.js';
+import CustomPaginationActionsTable from './ProductReferTable';
+import '../../assets/css/ProductDetails.css';
+import { Link, useParams, useNavigate } from "react-router-dom";
+import productService from '../../services/ProductService.js';
+import fileService from '../../services/FileService.js';
 import referralService from '../../services/ReferralService.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-export default function UserDetails() {
-    let [user, setUsers] = useState();
-    let [ref, setRef] = useState(0);
-    let [share, setShare] = useState(0);
+export default function ProductDetails() {
     let id = useParams();
-    const [loading, setLoading] = useState(true);
+    let [loading, setLoading] = useState(true);
+    let [prod, setProd] = useState();
+    let [video, setVideo] = useState();
+    let [share, setShare] = useState(0);
+    let [shareUser, setShareUser] = useState(0);
     useEffect(() => {
-        userService.getUserById(id.uId).then((res) => {
-            if (res.status == 'success') {
-                setUsers(res?.data);
-                setLoading(false);
+        productService.getProductById(id.pId).then((product) => {
+            if (product.status == 'success') {
+                setProd(product.data);
+                fileService.getVideoStreamingURL(product.data.video_src).then((vid) => {
+                    if (vid.status == 'success') {
+                        setVideo(vid.url);
+                        setLoading(false);
+                    }
+                });
+            } else {
+
             }
-        })
+
+        }).catch((error) => {
+            console.log(error);
+        });
     }, []);
+
     useEffect(() => {
-        referralService.getCount({ user_id: id.uId }).then((res) => {
-            if (res?.status == 'success') {
-                res?.count > 0 ? setRef(res?.count) : setRef(0);
-                setLoading(false);
-            }
-        }).catch((err) => {
-            setRef(0);
-            setLoading(false);
-        })
-    }, []);
-    useEffect(() => {
-        referralService.getTotalShareCountByUserId(id.uId).then((res) => {
+        referralService.getTotalShareCountByProductId(id.pId).then((res) => {
             if (res.status == 'success') {
                 res?.count > 0 ? setShare(res?.count) : setShare(0);
                 setLoading(false);
@@ -44,6 +47,34 @@ export default function UserDetails() {
             setLoading(false);
         })
     }, []);
+
+    useEffect(() => {
+        referralService.getTotalDistinctShareCountByProductId(id.pId).then((res) => {
+            if (res.status == 'success') {
+                res?.count > 0 ? setShareUser(res?.count) : setShareUser(0);
+                setLoading(false);
+            }
+        }).catch((err) => {
+            setShareUser(0);
+            setLoading(false);
+        })
+    }, []);
+
+    var referers = [
+        {
+            id: 1,
+            name: "ABC",
+            media: "Facebook",
+            count: 5
+        },
+        {
+            id: 5,
+            name: "XYZ",
+            media: "Twitter",
+            count: 2
+        }
+    ]
+
     return (
         <>
             {!loading ?
@@ -52,33 +83,22 @@ export default function UserDetails() {
                         <AdminSidebar />
                         <div className='col-md-8'>
                             <div className='d-flex justify-content-between'>
-                                <Link to="/admins/users">
+                                <Link to="/admins/products">
                                     <span className="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
                                         keyboard_backspace
                                     </span>
                                 </Link>
-                                <h3 className='' style={{ color: "#1C4A45", fontSize: "36px" }}>Customer Details</h3>
+                                <h3 className='' style={{ color: "#1C4A45", fontSize: "36px" }}>Product Details</h3>
                                 <h3 className=''></h3>
-                            </div>
-                            <div className='mt-4'>
-                                <div className="card">
-                                    <div className="cardBody">
-                                        <p className='title'>Personal Information</p>
-                                        <label>Name</label><span className='name'>:</span><span>{user.name}</span><hr />
-                                        <label>Email</label><span className='email'>:</span><span>{user.email}</span><hr />
-                                        <label>Phone</label><span className='phone'>:</span><span>{user.phone_number}</span><hr />
-
-                                    </div>
-                                </div>
                             </div>
                             <div className='cardSection'>
                                 <div className='user-card__container'>
                                     <div className='user-card'>
                                         <h2 className='user-card__title'>
-                                            User ID
+                                            Product ID
                                         </h2>
                                         <p className='user-card__detail'>
-                                            {user.id}
+                                            {prod?.id}
                                         </p>
                                     </div>
 
@@ -93,14 +113,22 @@ export default function UserDetails() {
 
                                     <div className='user-card'>
                                         <h2 className='user-card__title'>
-                                            Total Referral
+                                            Share by Different User
                                         </h2>
                                         <p className='user-card__detail'>
-                                            {ref}
+                                            {shareUser}
                                         </p>
                                     </div>
                                 </div>
                             </div>
+                            <h3 className='text-center' style={{ color: "#4A4A4A", fontSize: "36px" }}>Referral history</h3>
+                            <CustomPaginationActionsTable data={referers} />
+                            {/* <h3 className='text-center' style={{ color: "#4A4A4A", fontSize: "36px" }}>{prod?.name}</h3>
+                            <div className='mt-4'>
+                                <div className='d-flex justify-content-center mb-4 mt-md-3 mt-0'>
+                                    <ReactPlayer controls url={video} playing={false} />
+                                </div>
+                            </div> */}
                         </div>
                         <div className='col-md-1'></div>
                     </div>

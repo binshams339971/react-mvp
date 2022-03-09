@@ -34,12 +34,11 @@ function Dashboard() {
         }).catch((error) => {
             console.log(error);
         });
-        console.log(prods)
     });
     useEffect(() => {
         referralService.getCount().then((c) => {
             if (c.status == 'success') {
-                setShare(c?.data.length);
+                setShare(c?.count);
                 setLoading(false);
             } else {
                 console.log("Failed");
@@ -47,7 +46,6 @@ function Dashboard() {
         }).catch((error) => {
             console.log(error);
         });
-        console.log(prods)
     });
     return (
         <>

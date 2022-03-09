@@ -26,14 +26,14 @@ function Product(props) {
     useEffect(() => {
         productService.getProducts({ include: 'SubCategory' }).then((products) => {
             if (products.status === 'success') {
-                products.data?.map((p) => {
-                    fileService.getFileURL(p.video_thumbnail_src).then((res) => {
-                        if (res.status == 'success') {
-                            p.video_thumbnail_src = res.url;
-                            setLoading(false);
-                        }
-                    });
-                })
+                // products.data?.map((p) => {
+                //     fileService.getFileURL(p.video_thumbnail_src).then((res) => {
+                //         if (res.status == 'success') {
+                //             p.video_thumbnail_src = res.url;
+                //             setLoading(false);
+                //         }
+                //     });
+                // })
                 setProduct(products.data);
                 setLoading(false);
             } else {
@@ -74,7 +74,7 @@ function Product(props) {
                             {product?.map((p) =>
                                 b.id === p.brand_id &&
                                 <div className="cards" key={p.id}>
-                                    <img className="card-img" src={p.video_thumbnail_src} alt="abc" />
+                                    <img className="card-img" src={`https://apimvp.deepchainlabs.com/${p.video_thumbnail_src}`} alt="abc" />
                                     <div className="info">
                                         <span>{p.name}<br />{p.sub_info}</span><br />
                                         <Link to={`/details/${p.id}`} className="view_now-btn">View Now

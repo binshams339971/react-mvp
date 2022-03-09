@@ -2,11 +2,11 @@
     margin: 0 100px;
 }
 
-.card-body .title{
+.cardBody .title{
     font-size: 16px;
     color: #252733;
 }
-.card-body,label{
+.cardBody,label{
     margin-left: 20px;
     margin-top: 20px;
     font-weight: 500;
@@ -16,15 +16,15 @@
     color: #252733;
 }
 
-.card-body .name{
+.cardBody .name{
     margin-left: 30px;
     margin-right: 30px;
 }
-.card-body .email{
+.cardBody .email{
     margin-left: 35px;
     margin-right: 30px;
 }
-.card-body .phone{
+.cardBody .phone{
     margin-left: 28px;
     margin-right: 30px;
 }
@@ -35,31 +35,31 @@
         margin: 0 0px;
     }
     
-    .card-body .title{
+    .cardBody .title{
         font-size: 16px;
         color: #252733;
     }
-    .card-body,label,span{
+    .cardBody,label{
         margin-left: 5px;
         margin-top: 20px;
         font-weight: 500;
-        font-size: 18px;
+        font-size: 15px;
         line-height: 10px;
         letter-spacing: 0.250575px;
         color: #252733;
     }
     
-    .card-body .name{
-        margin-left: 10px;
-        margin-right: 10px;
+    .cardBody .name{
+        margin-left: 2px;
+        margin-right: 2px;
     }
-    .card-body .email{
-        margin-left: 10px;
-        margin-right: 10px;
+    .cardBody .email{
+        margin-left: 2px;
+        margin-right: 2px;
     }
-    .card-body .phone{
-        margin-left: 10px;
-        margin-right: 10px;
+    .cardBody .phone{
+        margin-left: 2px;
+        margin-right: 2px;
     }
   }
 

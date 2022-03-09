@@ -23,7 +23,7 @@ function Users() {
     }, []);
 
     useEffect(() => {
-        console.log(users);
+        //console.log(users);
     }, [users]);
     return (
         <>
