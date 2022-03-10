@@ -42,9 +42,9 @@ function Users() {
                                 <h3 className=''></h3>
                             </div>
                             <div className='mt-4'>
-                                <div className='d-flex justify-content-center'>
+                                {/* <div className='d-flex justify-content-center'>
                                     <input type="text" placeholder="Search" className='searchBox0' />
-                                </div>
+                                </div> */}
                                 <div className='userInfo'>
                                     <CustomPaginationActionsTable data={users} />
                                 </div>

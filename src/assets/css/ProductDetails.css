@@ -68,7 +68,7 @@
       min-height: 250px;
   }
 
-  .socials a{
+  .socials button{
       border: 1px solid rgb(216, 216, 216);
       margin: 0 20px;
       border-radius: 50%;
@@ -77,12 +77,15 @@
       text-align: center;
 
   }
-  .socials a:hover{
+  .socials button:hover{
     text-decoration: none;
+}
+.socials i{
+    margin: auto;
 }
 
 .socials .fb{
-    margin-left: -10px;
+    margin-left: -12px;
     color: black;
 }
 

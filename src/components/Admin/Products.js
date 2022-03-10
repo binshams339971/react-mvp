@@ -19,7 +19,9 @@ function Products() {
     const [loading2, setLoading2] = useState(true);
     const [brands, setBrands] = useState();
     const [categories, setCategories] = useState([]);
+    const [catId, setCatId] = useState();
     const [subCategories, setSubCategories] = useState([]);
+    const [radio, setRadio] = useState("radioA");
     useEffect(() => {
         productService.getProducts().then((products) => {
             if (products.status == 'success') {
@@ -55,7 +57,6 @@ function Products() {
     }, []);
     useEffect(() => {
         //console.log(brands);
-
     }, [prods, brands, categories, subCategories]);
 
     const [inputField, setInputField] = useState({
@@ -91,12 +92,16 @@ function Products() {
     }
 
     const categoryHandler = (e) => {
-        let cat = e.target.value
-        subCategoryService.getSubCategories({ category_id: cat }).then((subcats) => {
+        subCategoryService.getSubCategories({ category_id: catId }).then((subcats) => {
             if (subcats.status == 'success') {
-                //console.log(subcats.data);
-                setSubCategories(subcats.data);
+                // subcats?.data.map((b) => {
+                //     if (catId == b.category_id) {
+                //         setSubCategories(subCategories => [...subCategories, subcats?.data]);
+                //     }
+                // })
+                setSubCategories(subcats?.data);
                 category = e.target.value;
+                setLoading2(false);
             } else {
                 console.log("Failed");
             }
@@ -107,6 +112,42 @@ function Products() {
 
     const subCategoryHandler = (e) => {
         subcategory = e.target.value;
+    };
+
+    let [brandName, setBrandName] = useState('');
+    let [categoryName, setCategoryName] = useState('');
+    let [subCategoryName, setSubCategoryName] = useState('');
+    let [cat2, setCat2] = useState('');
+
+    const categoryHandler2 = (e) => {
+        setCat2(e.target.value);
+    }
+
+    const addInfo = () => {
+        radio == 'radioA' &&
+            brandService.insertBrand({ name: brandName }).then((res) => {
+                if (res.status == 'success') {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        radio == 'radioB' &&
+            categoryService.insertCategory({ name: categoryName }).then((res) => {
+                if (res.status == 'success') {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        radio == 'radioC' &&
+            subCategoryService.insertSubCategory({ name: subCategoryName, category_id: cat2 }).then((res) => {
+                if (res.status == 'success') {
+                    console.log(res);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 
     return (
@@ -126,8 +167,8 @@ function Products() {
                                 <h3 className=''></h3>
                             </div>
                             <div className='mt-4'>
-                                <div className='d-flex justify-content-between'>
-                                    <input type="text" placeholder="Search" className='searchBox' />
+                                <div className='d-flex justify-content-between mx-5'>
+                                    <button className="addProducts" data-toggle="modal" data-target="#addInfoModal">ADD INFO +</button>
                                     <button className="addProducts" data-toggle="modal" data-target="#addProductsModal">ADD PRODUCTS +</button>
                                 </div>
                                 <div className='productInfo'>
@@ -136,6 +177,7 @@ function Products() {
                             </div>
                         </div>
 
+                        {/* Product Modal */}
                         <div className="modal fade" id="addProductsModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
@@ -167,7 +209,8 @@ function Products() {
                                                 {subCategories?.map((b) => (
                                                     <option key={b.id} value={b.id}>{b.name}</option>
                                                 ))}
-                                            </select><br />
+                                            </select>
+                                            <br />
                                             <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
                                             <label className="custom-file-upload1 text-white">
                                                 <input type="file" />
@@ -182,6 +225,66 @@ function Products() {
                                     </div>
                                     <div className="modal-footer">
                                         <button onClick={addProduct} className="addProducts">ADD PRODUCTS +</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {/* Info Modal */}
+                        <div className="modal fade" id="addInfoModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-body">
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h2 className='text-center'>Add Info</h2>
+                                        <div className=''>
+                                            <div className="options">
+                                                <input type="radio" id="radioA" value="radioA" checked={radio === "radioA"} onChange={(e) => { setRadio(e.target.value) }} />
+                                                <input type="radio" id="radioB" value="radioB" checked={radio === "radioB"} onChange={(e) => { setRadio(e.target.value) }} />
+                                                <input type="radio" id="radioC" value="radioC" checked={radio === "radioC"} onChange={(e) => { setRadio(e.target.value) }} />
+                                                <label for="radioA" className={radio == "radioA" ? "activeRadio" : ''}>
+                                                    <span>Brand</span>
+                                                </label>
+                                                <label for="radioB" className={radio == "radioB" ? "activeRadio" : ''}>
+                                                    <span>Category</span>
+                                                </label>
+                                                <label for="radioC" className={radio == "radioC" ? "activeRadio" : ''}>
+                                                    <span>Sub Category</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        {radio === 'radioA' &&
+                                            <>
+                                                <label className='nameLabel'>Brand Name<sup className='text-danger'>*</sup></label><input type="text" className="brandName" name="brandName" onChange={event => setBrandName(event.target.value)} />
+                                                <br />
+                                            </>
+                                        }
+                                        {radio === 'radioB' &&
+                                            <>
+                                                <label className='nameLabel'>Category Name<sup className='text-danger'>*</sup></label><input type="text" className="categoryName" name="categoryname" onChange={event => setCategoryName(event.target.value)} />
+                                                <br />
+                                            </>
+                                        }
+                                        {radio === 'radioC' &&
+                                            <>
+                                                <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
+                                                <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler2}>
+                                                    <option value="0">Select a category</option>
+                                                    {categories?.map((b) => (
+                                                        <option key={b.id} value={b.id}>{b.name}</option>
+                                                    ))}
+                                                </select><br />
+                                                <label className='nameLabelSub'>Sub Category<sup className='text-danger'>*</sup></label><input type="text" className="subcategoryName" name="subcategoryName" onChange={event => setSubCategoryName(event.target.value)} />
+                                                <br />
+                                            </>
+                                        }
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button onClick={addInfo} className="addProducts">ADD INFO +</button>
                                     </div>
                                 </div>
                             </div>

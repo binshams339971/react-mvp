@@ -10,16 +10,20 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import productService from '../services/ProductService.js';
 import fileService from '../services/FileService.js';
 import userService from '../services/UserService.js';
+import referralService from '../services/ReferralService.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 toast.configure();
 export default function ProductDetails() {
     let id = useParams();
     let [loading, setLoading] = useState(true);
     let [prod, setProd] = useState();
     let [video, setVideo] = useState();
+    let [social, setSocial] = useState('');
     useEffect(() => {
         productService.getProductById(id.pId).then((product) => {
             if (product.status == 'success') {
@@ -50,25 +54,38 @@ export default function ProductDetails() {
             [name]: value,
         }));
     }
+
+
+
     const submitButton = () => {
         setLoading(true);
         userService.insertUser({ name: inputField.name, email: inputField.email, phone_number: inputField.phone }).then((res) => {
             if (res.status == 'success') {
-                console.log(res.data);
-                setInputField({ name: '', email: '', phone: '' });
-                setLoading(false);
-                document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
-                document.querySelectorAll(".modal-backdrop")
-                    .forEach(el => el.classList.remove("modal-backdrop"));
-                toast.success('Submitted successfuly!', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                referralService.insertReferral({ user_id: res?.data.id, product_id: id.pId, platform: social }).then((res) => {
+                    if (res.status == 'success') {
+                        console.log(res);
+                        setInputField({ name: '', email: '', phone: '' });
+                        setSocial('');
+                        setLoading(false);
+                        document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
+                        document.querySelectorAll(".modal-backdrop")
+                            .forEach(el => el.classList.remove("modal-backdrop"));
+
+                        toast.success('Submitted successfuly!', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    } else {
+
+                    }
+                }).catch((err) => {
+
+                })
             } else {
                 setLoading(false);
                 toast.error('Submission failed!', {
@@ -94,6 +111,11 @@ export default function ProductDetails() {
             });
         })
     }
+
+    const handleSocial = (value) => {
+        setSocial(value);
+    }
+
     return (
         <>
             {!loading ?
@@ -115,7 +137,7 @@ export default function ProductDetails() {
                     <div className="d-flex mx-5">
                         <h3 className='' style={{ color: "#4A4A4A", fontSize: "28px" }}>{prod?.sub_info}</h3>
                         <div className="ml-auto my-auto mr-4">
-                            <a href="#" data-toggle="modal" data-target="#exampleModalCenter">
+                            <a href="#">
                                 <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                                     favorite_border
                                 </span>
@@ -141,24 +163,43 @@ export default function ProductDetails() {
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h3 className="text-center mt-5">Share this on</h3>
-                                    <div className="d-flex justify-content-center mt-4 socials">
-                                        <a href="">
-                                            <i className="fa-brands fa-facebook-f" style={{ fontSize: "30px", margin: "10px 15px", color: "#053fa3" }}></i><p className="fb">Facebook</p>
-                                        </a>
-                                        <a href="">
-                                            <i className="fa-brands fa-twitter" style={{ fontSize: "30px", margin: "10px 10px" }}></i><p className="twt">Twitter</p>
-                                        </a>
-                                        <a href="">
-                                            <i className="fa-brands fa-facebook-messenger" style={{ fontSize: "30px", margin: "10px 9.2px" }}></i><p className="mnsg">Messenger</p>
-                                        </a>
-                                        <a href="">
-                                            <span className="material-icons-outlined mx-2" style={{ fontSize: "30px", margin: "10px 0 10px 10px", color: "#000000" }}>
-                                                chat
-                                            </span><p className="sms">SMS</p>
-
-                                        </a>
+                                    <div className="socialOptions">
+                                        <h3 className="text-center mt-3">Share this on</h3>
+                                        <div className="d-flex justify-content-center mt-4 socials">
+                                            <button onClick={() => handleSocial('facebook')}>
+                                                <i className="fa-brands fa-facebook-f" style={{ fontSize: "30px", margin: "10px 15px", color: "#053fa3" }}></i><p className="fb">Facebook</p>
+                                            </button>
+                                            <button onClick={() => handleSocial('twitter')}>
+                                                <i className="fa-brands fa-twitter" style={{ fontSize: "30px", margin: "10px 10px" }}></i><p className="twt">Twitter</p>
+                                            </button>
+                                            <button onClick={() => handleSocial('messenger')}>
+                                                <i className="fa-brands fa-facebook-messenger" style={{ fontSize: "30px", margin: "10px 9.2px" }}></i><p className="mnsg">Messenger</p>
+                                            </button>
+                                            <button onClick={() => handleSocial('sms')}>
+                                                <span className="material-icons-outlined mx-2" style={{ fontSize: "30px", margin: "10px 0 10px 10px", color: "#000000" }}>
+                                                    chat
+                                                </span><p className="sms">SMS</p>
+                                            </button>
+                                        </div>
                                     </div>
+
+                                    {social &&
+                                        <div className="userInfo">
+                                            <h3 className="text-center mt-2">Submit your info</h3>
+                                            <div className="mt-2 text-center infos">
+                                                <input type="text" name="name" onChange={inputsHandler} value={inputField.name} placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                                <input type="text" name="email" onChange={inputsHandler} value={inputField.email} placeholder="youremail@email.com" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                                <input type="text" name="phone" onChange={inputsHandler} value={inputField.phone} placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
+
+                                                <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>
+                                                    Submit
+                                                    {loading && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

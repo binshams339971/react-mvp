@@ -32,6 +32,10 @@ export default function UserDetails() {
             setRef(0);
             setLoading(false);
         })
+
+        return () => {
+            setRef(0);
+        };
     }, []);
     useEffect(() => {
         referralService.getTotalShareCountByUserId(id.uId).then((res) => {
@@ -43,6 +47,10 @@ export default function UserDetails() {
             setShare(0);
             setLoading(false);
         })
+
+        return () => {
+            setShare(0);
+        };
     }, []);
     return (
         <>
@@ -64,9 +72,9 @@ export default function UserDetails() {
                                 <div className="card">
                                     <div className="cardBody">
                                         <p className='title'>Personal Information</p>
-                                        <label>Name</label><span className='name'>:</span><span>{user.name}</span><hr />
-                                        <label>Email</label><span className='email'>:</span><span>{user.email}</span><hr />
-                                        <label>Phone</label><span className='phone'>:</span><span>{user.phone_number}</span><hr />
+                                        <label>Name</label><span className='name'>:</span><span>{user?.name}</span><hr />
+                                        <label>Email</label><span className='email'>:</span><span>{user?.email}</span><hr />
+                                        <label>Phone</label><span className='phone'>:</span><span>{user?.phone_number}</span><hr />
 
                                     </div>
                                 </div>
@@ -78,7 +86,7 @@ export default function UserDetails() {
                                             User ID
                                         </h2>
                                         <p className='user-card__detail'>
-                                            {user.id}
+                                            {user?.id}
                                         </p>
                                     </div>
 
