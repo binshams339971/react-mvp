@@ -1,5 +1,5 @@
-import axios from 'axios'; 
-import { handleResponse, handleError } from './response'; 
+import axios from 'axios';
+import { handleResponse, handleError } from './response';
 import config from '../../../config/app-config';
 import { bearerToken } from '../../../helpers/authHelper';
 
@@ -16,11 +16,11 @@ const getAll = (resource, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .get(`${BASE_URL}/${resource}`, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .get(`${BASE_URL}/${resource}`, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
 const getCount = (resource, requestConfig) => {
   requestConfig = {
@@ -31,13 +31,13 @@ const getCount = (resource, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .get(`${BASE_URL}/${resource}/count`, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
+  return axios
+    .get(`${BASE_URL}/${resource}/count`, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
 };
 
-const getById = (resource, id, requestConfig) => { 
+const getById = (resource, id, requestConfig) => {
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
@@ -46,13 +46,13 @@ const getById = (resource, id, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .get(`${BASE_URL}/${resource}/${id}`, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .get(`${BASE_URL}/${resource}/${id}`, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
-const get = (resource, requestConfig) => { 
+const get = (resource, requestConfig) => {
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
@@ -61,13 +61,27 @@ const get = (resource, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .get(`${BASE_URL}/${resource}`, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .get(`${BASE_URL}/${resource}`, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
-const post = (resource, data, requestConfig) => { 
+const post = (resource, data, requestConfig) => {
+  requestConfig = {
+    headers: {
+      'Authorization': `Bearer ${bearerToken}`,
+      'Content-Type': 'application/json',
+      ...requestConfig?.headers
+    },
+  };
+  return axios
+    .post(`${BASE_URL}/${resource}`, data, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
+
+const put = (resource, id, data, requestConfig) => {
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
@@ -76,13 +90,13 @@ const post = (resource, data, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .post(`${BASE_URL}/${resource}`, data, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .put(`${BASE_URL}/${resource}/${id}`, data, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
-const put = (resource, id, data, requestConfig) => { 
+const patch = (resource, id, data, requestConfig) => {
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
@@ -91,13 +105,13 @@ const put = (resource, id, data, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .put(`${BASE_URL}/${resource}/${id}`, data, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .patch(`${BASE_URL}/${resource}/${id}`, data, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
-const patch = (resource, id, data, requestConfig) => { 
+const remove = (resource, id, requestConfig) => {
   requestConfig = {
     headers: {
       'Authorization': `Bearer ${bearerToken}`,
@@ -106,35 +120,20 @@ const patch = (resource, id, data, requestConfig) => {
     },
     ...requestConfig
   };
-  return axios 
-    .patch(`${BASE_URL}/${resource}/${id}`, data, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
+  return axios
+    .delete(`${BASE_URL}/${resource}/${id}`, requestConfig)
+    .then(handleResponse)
+    .catch(handleError);
+};
 
-const remove = (resource, id, requestConfig) => { 
-  requestConfig = {
-    headers: {
-      'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'application/json',
-      ...requestConfig?.headers
-    },
-    ...requestConfig
-  };
-  return axios 
-    .delete(`${BASE_URL}/${resource}/${id}`, requestConfig) 
-    .then(handleResponse) 
-    .catch(handleError); 
-}; 
-
-const apiProvider = { 
-  getAll, 
-  getById, 
+const apiProvider = {
+  getAll,
+  getById,
   getCount,
-  post, 
-  put, 
-  patch, 
-  remove, 
+  post,
+  put,
+  patch,
+  remove,
   get
 };
 

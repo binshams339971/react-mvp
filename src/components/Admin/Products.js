@@ -10,6 +10,7 @@ import referralService from '../../services/ReferralService.js';
 import { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { getCurrentUser } from '../../helpers/authHelper';
 let brand = '';
 let category = '';
 let subcategory = '';
@@ -24,7 +25,7 @@ function Products() {
     const [radio, setRadio] = useState("radioA");
     useEffect(() => {
         productService.getProducts().then((products) => {
-            if (products.status == 'success') {
+            if (products.status === 'success') {
                 setProds(products?.data);
                 setLoading(false);
             } else {
@@ -34,7 +35,7 @@ function Products() {
             console.log(error);
         });
         brandService.getBrands().then((brands) => {
-            if (brands.status == 'success') {
+            if (brands.status === 'success') {
                 setBrands(brands?.data);
                 setLoading2(false);
             } else {
@@ -44,7 +45,7 @@ function Products() {
             console.log(error);
         });
         categoryService.getCategories().then((cats) => {
-            if (cats.status == 'success') {
+            if (cats.status === 'success') {
                 setCategories(cats?.data);
                 setLoading(false);
             } else {
@@ -77,14 +78,46 @@ function Products() {
         }));
     }
 
+    const [selectedFile1, setSelectedFile1] = useState(null);
+    const [selectedFile2, setSelectedFile2] = useState(null);
+    const handleFileSelect1 = (event) => {
+        setSelectedFile1(event.target.files[0])
+    }
+    const handleFileSelect2 = (event) => {
+        setSelectedFile2(event.target.files[0])
+    }
+
     const addProduct = () => {
         //setInputField({ name: '', description: '' });
-        console.log(inputField.name);
-        console.log(inputField.description);
-        console.log(brand);
-        console.log(category);
-        console.log(subcategory);
+        //console.log(inputField.name);
+        //console.log(inputField.description);
+        //console.log(brand);
+        //console.log(category);
+        //console.log(subcategory);
+        console.log(selectedFile1);
+        //console.log(selectedFile2);
+
+        productService.insertProduct({
+            name: inputField.name,
+            sub_info: inputField.description,
+            description: inputField.description,
+            brand_id: brand,
+            category_id: category,
+            sub_category_id: subcategory,
+            video: selectedFile1,
+            video_thumbnail: selectedFile2
+        }).then((res) => {
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
+        })
     }
+
+
+    //Add Barnd, Category and Sub Category
+    let [brandName, setBrandName] = useState('');
+    let [categoryName, setCategoryName] = useState('');
+    let [subCategoryName, setSubCategoryName] = useState('');
 
     const brandHandler = (e) => {
         brand = e.target.value;
@@ -93,7 +126,7 @@ function Products() {
 
     const categoryHandler = (e) => {
         subCategoryService.getSubCategories({ category_id: catId }).then((subcats) => {
-            if (subcats.status == 'success') {
+            if (subcats.status === 'success') {
                 // subcats?.data.map((b) => {
                 //     if (catId == b.category_id) {
                 //         setSubCategories(subCategories => [...subCategories, subcats?.data]);
@@ -114,35 +147,32 @@ function Products() {
         subcategory = e.target.value;
     };
 
-    let [brandName, setBrandName] = useState('');
-    let [categoryName, setCategoryName] = useState('');
-    let [subCategoryName, setSubCategoryName] = useState('');
-    let [cat2, setCat2] = useState('');
 
+    let [cat2, setCat2] = useState('');
     const categoryHandler2 = (e) => {
         setCat2(e.target.value);
     }
 
     const addInfo = () => {
-        radio == 'radioA' &&
+        radio === 'radioA' &&
             brandService.insertBrand({ name: brandName }).then((res) => {
-                if (res.status == 'success') {
+                if (res.status === 'success') {
                     console.log(res);
                 }
             }).catch((err) => {
                 console.log(err);
             })
-        radio == 'radioB' &&
+        radio === 'radioB' &&
             categoryService.insertCategory({ name: categoryName }).then((res) => {
-                if (res.status == 'success') {
+                if (res.status === 'success') {
                     console.log(res);
                 }
             }).catch((err) => {
                 console.log(err);
             })
-        radio == 'radioC' &&
+        radio === 'radioC' &&
             subCategoryService.insertSubCategory({ name: subCategoryName, category_id: cat2 }).then((res) => {
-                if (res.status == 'success') {
+                if (res.status === 'success') {
                     console.log(res);
                 }
             }).catch((err) => {
@@ -213,12 +243,12 @@ function Products() {
                                             <br />
                                             <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
                                             <label className="custom-file-upload1 text-white">
-                                                <input type="file" />
+                                                <input type="file" onChange={handleFileSelect1} />
                                                 Upload <i className="fa-solid fa-arrow-up"></i>
                                             </label><br />
                                             <label className='thumbLabel'>Thumbnail</label>
                                             <label className="custom-file-upload2 text-white">
-                                                <input type="file" />
+                                                <input type="file" name='thumb' onChange={handleFileSelect2} />
                                                 Upload <i className="fa-solid fa-arrow-up"></i>
                                             </label><br />
                                         </div>
@@ -245,13 +275,13 @@ function Products() {
                                                 <input type="radio" id="radioA" value="radioA" checked={radio === "radioA"} onChange={(e) => { setRadio(e.target.value) }} />
                                                 <input type="radio" id="radioB" value="radioB" checked={radio === "radioB"} onChange={(e) => { setRadio(e.target.value) }} />
                                                 <input type="radio" id="radioC" value="radioC" checked={radio === "radioC"} onChange={(e) => { setRadio(e.target.value) }} />
-                                                <label for="radioA" className={radio == "radioA" ? "activeRadio" : ''}>
+                                                <label htmlFor="radioA" className={radio === "radioA" ? "activeRadio" : ''}>
                                                     <span>Brand</span>
                                                 </label>
-                                                <label for="radioB" className={radio == "radioB" ? "activeRadio" : ''}>
+                                                <label htmlFor="radioB" className={radio === "radioB" ? "activeRadio" : ''}>
                                                     <span>Category</span>
                                                 </label>
-                                                <label for="radioC" className={radio == "radioC" ? "activeRadio" : ''}>
+                                                <label htmlFor="radioC" className={radio === "radioC" ? "activeRadio" : ''}>
                                                     <span>Sub Category</span>
                                                 </label>
                                             </div>

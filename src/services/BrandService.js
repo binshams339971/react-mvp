@@ -2,7 +2,7 @@ import apiBrands from './api/BrandAPI';
 import brandMapper from '../mapper/BrandMapper';
 
 const brandService = {
-    getBrands: async (query) => { 
+    getBrands: async (query) => {
         const requestConfig = {
             params: query
         }
@@ -14,23 +14,23 @@ const brandService = {
                 };
 
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    getBrandById: async (id) => { 
+    getBrandById: async (id) => {
         try {
             return apiBrands.getById(id).then((data) => {
                 return {
@@ -38,24 +38,24 @@ const brandService = {
                     data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
     insertBrand: async (body) => {
-        const requestConfig = { 
+        const requestConfig = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -67,24 +67,24 @@ const brandService = {
                     data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
     updateBrand: async (id, body) => {
-        const requestConfig = { 
+        const requestConfig = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -96,19 +96,19 @@ const brandService = {
                     data: brandMapper.mapbrand(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     }

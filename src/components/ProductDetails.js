@@ -15,15 +15,22 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 toast.configure();
 export default function ProductDetails() {
     let id = useParams();
     let [loading, setLoading] = useState(true);
+    let [loading2, setLoading2] = useState(false);
     let [prod, setProd] = useState();
     let [video, setVideo] = useState();
     let [social, setSocial] = useState('');
+    let [shareLink, setShareLink] = useState('');
     useEffect(() => {
         productService.getProductById(id.pId).then((product) => {
             if (product.status == 'success') {
@@ -55,22 +62,22 @@ export default function ProductDetails() {
         }));
     }
 
-
-
     const submitButton = () => {
-        setLoading(true);
+        setLoading2(true);
         userService.insertUser({ name: inputField.name, email: inputField.email, phone_number: inputField.phone }).then((res) => {
             if (res.status == 'success') {
                 referralService.insertReferral({ user_id: res?.data.id, product_id: id.pId, platform: social }).then((res) => {
                     if (res.status == 'success') {
-                        console.log(res);
+                        console.log(res?.data.id.referral_token);
                         setInputField({ name: '', email: '', phone: '' });
                         setSocial('');
                         setLoading(false);
-                        document.getElementById("exampleModalCenter").classList.remove("show", "d-block");
+                        setLoading2(false);
+                        document.getElementById("submitModal").classList.remove("show", "d-block");
                         document.querySelectorAll(".modal-backdrop")
                             .forEach(el => el.classList.remove("modal-backdrop"));
-
+                        setShareLink(res?.data.id.referral_token);
+                        handleClickOpen();
                         toast.success('Submitted successfuly!', {
                             position: "top-right",
                             autoClose: 3000,
@@ -115,6 +122,23 @@ export default function ProductDetails() {
     const handleSocial = (value) => {
         setSocial(value);
     }
+
+
+    const [open, setOpen] = React.useState(false);
+    const [copy, setCopy] = React.useState('Copy');
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(shareLink);
+        setCopy('Copied')
+    };
 
     return (
         <>
@@ -167,16 +191,16 @@ export default function ProductDetails() {
                                         <h3 className="text-center mt-3">Share this on</h3>
                                         <div className="d-flex justify-content-center mt-4 socials">
                                             <button onClick={() => handleSocial('facebook')}>
-                                                <i className="fa-brands fa-facebook-f" style={{ fontSize: "30px", margin: "10px 15px", color: "#053fa3" }}></i><p className="fb">Facebook</p>
+                                                <i className="fa-brands fa-facebook-f" style={{ fontSize: "30px", margin: "10px 5px", color: "#4267B2" }}></i><p className="fb">Facebook</p>
                                             </button>
                                             <button onClick={() => handleSocial('twitter')}>
-                                                <i className="fa-brands fa-twitter" style={{ fontSize: "30px", margin: "10px 10px" }}></i><p className="twt">Twitter</p>
+                                                <i className="fa-brands fa-twitter" style={{ fontSize: "30px", margin: "10px 0px", color: "#1DA1F2" }}></i><p className="twt">Twitter</p>
                                             </button>
                                             <button onClick={() => handleSocial('messenger')}>
-                                                <i className="fa-brands fa-facebook-messenger" style={{ fontSize: "30px", margin: "10px 9.2px" }}></i><p className="mnsg">Messenger</p>
+                                                <i className="fa-brands fa-facebook-messenger" style={{ fontSize: "30px", margin: "9.5px 0px", color: "#006AFF" }}></i><p className="mnsg">Messenger</p>
                                             </button>
                                             <button onClick={() => handleSocial('sms')}>
-                                                <span className="material-icons-outlined mx-2" style={{ fontSize: "30px", margin: "10px 0 10px 10px", color: "#000000" }}>
+                                                <span className="material-icons-outlined mx-2" style={{ fontSize: "28px", margin: "10px 0px", color: "#000000" }}>
                                                     chat
                                                 </span><p className="sms">SMS</p>
                                             </button>
@@ -185,7 +209,9 @@ export default function ProductDetails() {
 
                                     {social &&
                                         <div className="userInfo">
-                                            <h3 className="text-center mt-2">Submit your info</h3>
+                                            <hr />
+                                            <h3 className="text-center mt-2" style={{ marginBottom: "0px" }}>Submit your info</h3>
+                                            <p className="text-center" style={{ marginBottom: "0px" }}>For <strong>{social}</strong> share</p>
                                             <div className="mt-2 text-center infos">
                                                 <input type="text" name="name" onChange={inputsHandler} value={inputField.name} placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
 
@@ -195,7 +221,7 @@ export default function ProductDetails() {
 
                                                 <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>
                                                     Submit
-                                                    {loading && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
+                                                    {loading2 && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
                                                 </button>
                                             </div>
                                         </div>
@@ -205,31 +231,25 @@ export default function ProductDetails() {
                         </div>
                     </div>
 
-                    {/* Modal */}
-                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div className="modal-dialog modal-dialog-centered" role="document">
-                            <div className="modal-content">
-                                <div className="modal-body">
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <h3 className="text-center mt-4">Submit your info</h3>
-                                    <div className="mt-2 text-center infos">
-                                        <input type="text" name="name" onChange={inputsHandler} value={inputField.name} placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
-                                        <input type="text" name="email" onChange={inputsHandler} value={inputField.email} placeholder="youremail@email.com" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
-                                        <input type="text" name="phone" onChange={inputsHandler} value={inputField.phone} placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
-                                        <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>
-                                            Submit
-                                            {loading && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Please share this link"}
+                            <Button onClick={handleCopy}>{copy}</Button>
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {shareLink}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Ok</Button>
+                        </DialogActions>
+                    </Dialog>
 
                     <div className="container notice0 mt-4">
                         <div className="notice-section">
