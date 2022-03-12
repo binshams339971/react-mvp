@@ -77,7 +77,7 @@ function Product(props) {
                                     <img className="card-img" src={`https://apimvp.deepchainlabs.com/${p.video_thumbnail_src}`} alt="abc" />
                                     <div className="info">
                                         <span>{p.name}<br />{p.sub_info}</span><br />
-                                        <Link to={`/details/${p.id}`} className="view_now-btn">View Now
+                                        <Link to={`/details/${p.id}/?identifier=${p.identifier}`} className="view_now-btn">View Now
                                             <img src={playIcon} className="play-icon" />
                                         </Link>
 

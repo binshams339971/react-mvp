@@ -11,6 +11,10 @@ import { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { getCurrentUser } from '../../helpers/authHelper';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 let brand = '';
 let category = '';
 let subcategory = '';
@@ -87,41 +91,75 @@ function Products() {
         setSelectedFile2(event.target.files[0])
     }
 
-    const addProduct = () => {
+    const addProduct = (e) => {
+        e.preventDefault();
         //setInputField({ name: '', description: '' });
         //console.log(inputField.name);
         //console.log(inputField.description);
         //console.log(brand);
         //console.log(category);
         //console.log(subcategory);
-        console.log(selectedFile1);
+        //console.log(selectedFile1);
         //console.log(selectedFile2);
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE2NDYxNTAzMDQsImV4cCI6MTY0ODc0MjMwNH0.qqgZmIJU6rjjQJfJ0nMScDhlFLnssC35ozSpLzIMMvo';
 
-        productService.insertProduct({
-            name: inputField.name,
-            sub_info: inputField.description,
-            description: inputField.description,
-            brand_id: brand,
-            category_id: category,
-            sub_category_id: subcategory,
-            video: selectedFile1,
-            video_thumbnail: selectedFile2
-        }).then((res) => {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+
+
+        const formData = new FormData();
+        formData.append('name', inputField.name);
+        formData.append('sub_info', inputField.description);
+        formData.append('description', inputField.description);
+        formData.append('brand_id', brand);
+        formData.append('category_id', category);
+        formData.append('sub_category_id', subcategory);
+        formData.append('video', selectedFile1);
+        //formData.append('video_thumbnail', selectedFile2);
+        //console.log(formData.get('video_thumbnail'));
+
+        productService.insertProduct(formData).then((res) => {
             console.log(res);
         }).catch((err) => {
             console.log(err);
         })
+
+
+        // axios.post('https://apimvp.deepchainlabs.com/api/v1/products', formData, { headers })
+        //     .then(response => { console.log(response) })
+        //     .catch(error => {
+        //         console.error('There was an error!', error);
+        //     });
     }
+
+    // {
+    //     name: inputField.name,
+    //     sub_info: inputField.description,
+    //     description: inputField.description,
+    //     brand_id: brand,
+    //     category_id: category,
+    //     sub_category_id: subcategory,
+    //     video: selectedFile1,
+    //     video_thumbnail: selectedFile2
+    // }
 
 
     //Add Barnd, Category and Sub Category
     let [brandName, setBrandName] = useState('');
     let [categoryName, setCategoryName] = useState('');
+    let [categoryIcon, setCategoryIcon] = useState(null);
     let [subCategoryName, setSubCategoryName] = useState('');
+    let [done, setDone] = useState(false);
 
     const brandHandler = (e) => {
         brand = e.target.value;
 
+    }
+
+    const handleCategoryFileSelect = (event) => {
+        setCategoryIcon(event.target.files[0]);
     }
 
     const categoryHandler = (e) => {
@@ -154,7 +192,7 @@ function Products() {
     }
 
     const addInfo = () => {
-        radio === 'radioA' &&
+        if (radio === 'radioA') {
             brandService.insertBrand({ name: brandName }).then((res) => {
                 if (res.status === 'success') {
                     console.log(res);
@@ -162,15 +200,32 @@ function Products() {
             }).catch((err) => {
                 console.log(err);
             })
-        radio === 'radioB' &&
-            categoryService.insertCategory({ name: categoryName }).then((res) => {
+        }
+        if (radio === 'radioB') {
+            const formData = new FormData();
+            formData.append('name', categoryName);
+            formData.append('icon', categoryIcon);
+            categoryService.insertCategory(formData).then((res) => {
                 if (res.status === 'success') {
-                    console.log(res);
+                    setDone(true);
+                    document.getElementById("addInfoModal").classList.remove("show", "d-block");
+                    document.querySelectorAll(".modal-backdrop")
+                        .forEach(el => el.classList.remove("modal-backdrop"));
+                    toast.success('Category added successfuly!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
                 }
             }).catch((err) => {
                 console.log(err);
             })
-        radio === 'radioC' &&
+        }
+        if (radio === 'radioC') {
             subCategoryService.insertSubCategory({ name: subCategoryName, category_id: cat2 }).then((res) => {
                 if (res.status === 'success') {
                     console.log(res);
@@ -178,7 +233,15 @@ function Products() {
             }).catch((err) => {
                 console.log(err);
             })
+        }
     }
+
+    useEffect(() => {
+        if (done) {
+            setCategoryName('');
+            setCategoryIcon(null);
+        }
+    }, [done])
 
     return (
         <>
@@ -211,51 +274,53 @@ function Products() {
                         <div className="modal fade" id="addProductsModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered" role="document">
                                 <div className="modal-content">
-                                    <div className="modal-body">
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h2 className='text-center'>Add Item</h2>
-                                        <div className='inputs'>
-                                            <label className='nameLabel'>Brand<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='brand text-white' onChange={brandHandler}>
-                                                <option value="0">Select brand</option>
-                                                {brands?.map((b) => (
-                                                    <option key={b.id} value={b.id}>{b.name}</option>
-                                                ))}
-                                            </select><br />
-                                            <label className='nameLabel'>Product Name<sup className='text-danger'>*</sup></label><input type="text" className="itemName" name="name" onChange={inputsHandler} value={inputField.name} /><br />
-                                            <label className='desLabel'>Description<sup className='text-danger'>*</sup></label><input type="text" className="description" name="description" onChange={inputsHandler} value={inputField.description} /><br />
-                                            <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler}>
-                                                <option value="0">Select a category</option>
-                                                {categories?.map((b) => (
-                                                    <option key={b.id} value={b.id}>{b.name}</option>
-                                                ))}
-                                            </select><br />
-                                            <label className='nameLabel'>Sub Category<sup className='text-danger'>*</sup></label>
-                                            <select name="brands" id="barnds" className='subcategory text-white' onChange={subCategoryHandler}>
-                                                <option value="0">Select a subcategory</option>
-                                                {subCategories?.map((b) => (
-                                                    <option key={b.id} value={b.id}>{b.name}</option>
-                                                ))}
-                                            </select>
-                                            <br />
-                                            <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
-                                            <label className="custom-file-upload1 text-white">
-                                                <input type="file" onChange={handleFileSelect1} />
-                                                Upload <i className="fa-solid fa-arrow-up"></i>
-                                            </label><br />
-                                            <label className='thumbLabel'>Thumbnail</label>
-                                            <label className="custom-file-upload2 text-white">
-                                                <input type="file" name='thumb' onChange={handleFileSelect2} />
-                                                Upload <i className="fa-solid fa-arrow-up"></i>
-                                            </label><br />
+                                    <form onSubmit={addProduct}>
+                                        <div className="modal-body">
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h2 className='text-center'>Add Item</h2>
+                                            <div className='inputs'>
+                                                <label className='nameLabel'>Brand<sup className='text-danger'>*</sup></label>
+                                                <select name="brands" id="barnds" className='brand text-white' onChange={brandHandler}>
+                                                    <option value="0">Select brand</option>
+                                                    {brands?.map((b) => (
+                                                        <option key={b.id} value={b.id}>{b.name}</option>
+                                                    ))}
+                                                </select><br />
+                                                <label className='nameLabel'>Product Name<sup className='text-danger'>*</sup></label><input type="text" className="itemName" name="name" onChange={inputsHandler} value={inputField.name} /><br />
+                                                <label className='desLabel'>Description<sup className='text-danger'>*</sup></label><input type="text" className="description" name="description" onChange={inputsHandler} value={inputField.description} /><br />
+                                                <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
+                                                <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler}>
+                                                    <option value="0">Select a category</option>
+                                                    {categories?.map((b) => (
+                                                        <option key={b.id} value={b.id}>{b.name}</option>
+                                                    ))}
+                                                </select><br />
+                                                <label className='nameLabel'>Sub Category<sup className='text-danger'>*</sup></label>
+                                                <select name="brands" id="barnds" className='subcategory text-white' onChange={subCategoryHandler}>
+                                                    <option value="0">Select a subcategory</option>
+                                                    {subCategories?.map((b) => (
+                                                        <option key={b.id} value={b.id}>{b.name}</option>
+                                                    ))}
+                                                </select>
+                                                <br />
+                                                <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
+                                                <label className="custom-file-upload1 text-white">
+                                                    <input type="file" onChange={handleFileSelect1} />
+                                                    Upload <i className="fa-solid fa-arrow-up"></i>
+                                                </label><br />
+                                                <label className='thumbLabel'>Thumbnail</label>
+                                                <label className="custom-file-upload2 text-white">
+                                                    <input type="file" name='thumb' onChange={handleFileSelect2} />
+                                                    Upload <i className="fa-solid fa-arrow-up"></i>
+                                                </label><br />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <button onClick={addProduct} className="addProducts">ADD PRODUCTS +</button>
-                                    </div>
+                                        <div className="modal-footer">
+                                            <button type='submit' className="addProducts">ADD PRODUCTS +</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -297,6 +362,11 @@ function Products() {
                                             <>
                                                 <label className='nameLabel'>Category Name<sup className='text-danger'>*</sup></label><input type="text" className="categoryName" name="categoryname" onChange={event => setCategoryName(event.target.value)} />
                                                 <br />
+                                                <label className='thumbLabel'>Category Icon<sup className='text-danger'>*</sup></label>
+                                                <label className="custom-file-upload3 text-white">
+                                                    <input type="file" name='thumb' onChange={handleCategoryFileSelect} />
+                                                    Upload <i className="fa-solid fa-arrow-up"></i>
+                                                </label><br />
                                             </>
                                         }
                                         {radio === 'radioC' &&

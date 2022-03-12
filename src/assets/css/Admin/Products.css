@@ -156,6 +156,17 @@ input[type="file"] {
     cursor: pointer;
 }
 
+.custom-file-upload3 {
+    margin-left: 25px;
+    border-radius: 10px;
+    background: #807f7f;
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 3px 20px;
+    cursor: pointer;
+}
+
+
 .options input[type="radio"]{
     display: none;
 }

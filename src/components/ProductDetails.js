@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import '../assets/css/ProductDetails.css';
 import img1 from '../assets/images/maxresdefault.png';
@@ -25,29 +26,39 @@ import DialogTitle from '@mui/material/DialogTitle';
 toast.configure();
 export default function ProductDetails() {
     let id = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    let [identifier, setIdentifier] = useState(
+        searchParams.get("identifier")
+    );
+    let [path, setPath] = useState('');
+    let [referToken, setReferToken] = useState('');
     let [loading, setLoading] = useState(true);
     let [loading2, setLoading2] = useState(false);
     let [prod, setProd] = useState();
     let [video, setVideo] = useState();
     let [social, setSocial] = useState('');
     let [shareLink, setShareLink] = useState('');
+
     useEffect(() => {
-        productService.getProductById(id.pId).then((product) => {
+        //console.log(identifier);
+        productService.getProducts({ identifier: identifier }).then((product) => {
             if (product.status == 'success') {
                 setProd(product.data);
-                fileService.getVideoStreamingURL(product.data.video_src).then((vid) => {
+                fileService.getVideoStreamingURL(product.data[0].video_src).then((vid) => {
                     if (vid.status == 'success') {
                         setVideo(vid.url);
                         setLoading(false);
                     }
                 });
             } else {
-
+                console.log("error");
             }
 
         }).catch((error) => {
             console.log(error);
         });
+        //console.log(window.location.href);
+        setPath(window.location.pathname);
     }, []);
     const [inputField, setInputField] = useState({
         name: '',
@@ -68,7 +79,7 @@ export default function ProductDetails() {
             if (res.status == 'success') {
                 referralService.insertReferral({ user_id: res?.data.id, product_id: id.pId, platform: social }).then((res) => {
                     if (res.status == 'success') {
-                        console.log(res?.data.id.referral_token);
+                        setReferToken(res?.data.id.referral_token);
                         setInputField({ name: '', email: '', phone: '' });
                         setSocial('');
                         setLoading(false);
@@ -136,7 +147,7 @@ export default function ProductDetails() {
     };
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(shareLink);
+        navigator.clipboard.writeText("http://mvp.deepchainlabs.com".concat(path).concat("?refertoken=").concat(referToken));
         setCopy('Copied')
     };
 
@@ -180,7 +191,7 @@ export default function ProductDetails() {
                     </div>
 
                     {/* Modal */}
-                    <div className="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal fade" id="submitModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered" role="document">
                             <div className="modal-content">
                                 <div className="modal-body">
@@ -239,11 +250,11 @@ export default function ProductDetails() {
                     >
                         <DialogTitle id="alert-dialog-title">
                             {"Please share this link"}
-                            <Button onClick={handleCopy}>{copy}</Button>
+                            <Button className="text-right" onClick={handleCopy}>{copy}</Button>
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                {shareLink}
+                                <p style={{ fontSize: "14px" }}>http://mvp.deepchainlabs.com{path}?refertoken={referToken}</p>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

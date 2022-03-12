@@ -2,7 +2,7 @@ import apiProducts from './api/ProductAPI';
 import productMapper from '../mapper/ProductMapper';
 
 const productService = {
-    getProducts: async (query) => { 
+    getProducts: async (query) => {
         const requestConfig = {
             params: query
         }
@@ -14,23 +14,23 @@ const productService = {
                 };
 
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
-    getProductById: async (id) => { 
+    getProductById: async (id) => {
         try {
             return apiProducts.getById(id).then((data) => {
                 return {
@@ -38,24 +38,25 @@ const productService = {
                     data: productMapper.mapProduct(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
     insertProduct: async (body) => {
-        const requestConfig = { 
+        console.log(body.get('video'));
+        const requestConfig = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -67,24 +68,24 @@ const productService = {
                     data: productMapper.mapProduct(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     },
     updateProduct: async (id, body) => {
-        const requestConfig = { 
+        const requestConfig = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -96,19 +97,19 @@ const productService = {
                     data: productMapper.mapProduct(data)
                 };
             }).catch((error) => {
-                if(error?.data){
+                if (error?.data) {
                     throw { ...error.data, statusCode: error.status };
-                }else{
+                } else {
                     throw {
                         status: 'failed',
-                        errors: [ error ]
+                        errors: [error]
                     };
                 }
-            }); 
+            });
         } catch (error) {
             throw {
                 status: 'failed',
-                errors: [ error ]
+                errors: [error]
             };
         }
     }
