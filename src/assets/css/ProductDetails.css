@@ -102,3 +102,13 @@
   .socials img{
     margin: auto;
 }
+
+.errorMsg{
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    margin: 0;
+    margin-left: 100px;
+    text-align: left;
+}

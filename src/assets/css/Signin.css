@@ -115,3 +115,11 @@ margin: 15px 0;
     letter-spacing: -0.395367px;
     color: #5F5F5F;
 }
+
+.errMsg{
+  margin: 10px 0 0 5px;
+  color: red;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 15px;
+}

@@ -35,7 +35,7 @@ const brandService = {
             return apiBrands.getById(id).then((data) => {
                 return {
                     status: 'success',
-                    data: brandMapper.mapbrand(data)
+                    data: brandMapper.mapBrands(data)
                 };
             }).catch((error) => {
                 if (error?.data) {
@@ -64,7 +64,7 @@ const brandService = {
             return apiBrands.post(body, requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: brandMapper.mapbrand(data)
+                    data: brandMapper.mapBrand(data)
                 };
             }).catch((error) => {
                 if (error?.data) {
@@ -93,7 +93,7 @@ const brandService = {
             return apiBrands.put(id, body, requestConfig).then((data) => {
                 return {
                     status: 'success',
-                    data: brandMapper.mapbrand(data)
+                    data: brandMapper.mapBrands(data)
                 };
             }).catch((error) => {
                 if (error?.data) {

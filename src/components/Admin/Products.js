@@ -1,5 +1,5 @@
 import AdminSidebar from './AdminSidebar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/css/Admin/Products.css';
 import CustomPaginationActionsTable from 'components/Admin/ProductsTable.js';
 import productService from '../../services/ProductService.js';
@@ -15,18 +15,17 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
+
 let brand = '';
 let category = '';
 let subcategory = '';
+
 function Products() {
-    const [prods, setProds] = useState([]);
+    let navigate = useNavigate();
+
     const [loading, setLoading] = useState(true);
-    const [loading2, setLoading2] = useState(true);
-    const [brands, setBrands] = useState();
-    const [categories, setCategories] = useState([]);
-    const [catId, setCatId] = useState();
-    const [subCategories, setSubCategories] = useState([]);
-    const [radio, setRadio] = useState("radioA");
+    const [prods, setProds] = useState([]);
+
     useEffect(() => {
         productService.getProducts().then((products) => {
             if (products.status === 'success') {
@@ -38,6 +37,22 @@ function Products() {
         }).catch((error) => {
             console.log(error);
         });
+    }, []);
+
+
+    // *****
+    //     Add Product Information
+    // *****
+
+    const [loading2, setLoading2] = useState(true);
+    const [brands, setBrands] = useState();
+    const [categories, setCategories] = useState([]);
+    const [catId, setCatId] = useState();
+    const [subCategories, setSubCategories] = useState([]);
+    const [videoFile, setVideoFile] = useState(null);
+    const [thumbnailFile, setThumbnailFile] = useState(null);
+
+    useEffect(() => {
         brandService.getBrands().then((brands) => {
             if (brands.status === 'success') {
                 setBrands(brands?.data);
@@ -58,118 +73,19 @@ function Products() {
         }).catch((error) => {
             console.log(error);
         });
-
-    }, []);
+    }, [])
     useEffect(() => {
         //console.log(brands);
     }, [prods, brands, categories, subCategories]);
 
-    const [inputField, setInputField] = useState({
-        name: '',
-        description: '',
-        video: '',
-        thumbnail: '',
-        brand0: '',
-        cat0: '',
-        subcat0: ''
-    })
-
-    const inputsHandler = (e) => {
-        const { name, value } = e.target;
-        setInputField((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    }
-
-    const [selectedFile1, setSelectedFile1] = useState(null);
-    const [selectedFile2, setSelectedFile2] = useState(null);
-    const handleFileSelect1 = (event) => {
-        setSelectedFile1(event.target.files[0])
-    }
-    const handleFileSelect2 = (event) => {
-        setSelectedFile2(event.target.files[0])
-    }
-
-    const addProduct = (e) => {
-        e.preventDefault();
-        //setInputField({ name: '', description: '' });
-        //console.log(inputField.name);
-        //console.log(inputField.description);
-        //console.log(brand);
-        //console.log(category);
-        //console.log(subcategory);
-        //console.log(selectedFile1);
-        //console.log(selectedFile2);
-        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE2NDYxNTAzMDQsImV4cCI6MTY0ODc0MjMwNH0.qqgZmIJU6rjjQJfJ0nMScDhlFLnssC35ozSpLzIMMvo';
-
-        const headers = {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-        }
-
-
-        const formData = new FormData();
-        formData.append('name', inputField.name);
-        formData.append('sub_info', inputField.description);
-        formData.append('description', inputField.description);
-        formData.append('brand_id', brand);
-        formData.append('category_id', category);
-        formData.append('sub_category_id', subcategory);
-        formData.append('video', selectedFile1);
-        //formData.append('video_thumbnail', selectedFile2);
-        //console.log(formData.get('video_thumbnail'));
-
-        productService.insertProduct(formData).then((res) => {
-            console.log(res);
-        }).catch((err) => {
-            console.log(err);
-        })
-
-
-        // axios.post('https://apimvp.deepchainlabs.com/api/v1/products', formData, { headers })
-        //     .then(response => { console.log(response) })
-        //     .catch(error => {
-        //         console.error('There was an error!', error);
-        //     });
-    }
-
-    // {
-    //     name: inputField.name,
-    //     sub_info: inputField.description,
-    //     description: inputField.description,
-    //     brand_id: brand,
-    //     category_id: category,
-    //     sub_category_id: subcategory,
-    //     video: selectedFile1,
-    //     video_thumbnail: selectedFile2
-    // }
-
-
-    //Add Barnd, Category and Sub Category
-    let [brandName, setBrandName] = useState('');
-    let [categoryName, setCategoryName] = useState('');
-    let [categoryIcon, setCategoryIcon] = useState(null);
-    let [subCategoryName, setSubCategoryName] = useState('');
-    let [done, setDone] = useState(false);
 
     const brandHandler = (e) => {
         brand = e.target.value;
-
-    }
-
-    const handleCategoryFileSelect = (event) => {
-        setCategoryIcon(event.target.files[0]);
     }
 
     const categoryHandler = (e) => {
-        subCategoryService.getSubCategories({ category_id: catId }).then((subcats) => {
+        subCategoryService.getSubCategories({ category_id: e.target.value }).then((subcats) => {
             if (subcats.status === 'success') {
-                // subcats?.data.map((b) => {
-                //     if (catId == b.category_id) {
-                //         setSubCategories(subCategories => [...subCategories, subcats?.data]);
-                //     }
-                // })
                 setSubCategories(subcats?.data);
                 category = e.target.value;
                 setLoading2(false);
@@ -185,63 +101,273 @@ function Products() {
         subcategory = e.target.value;
     };
 
+    const videoFileSelect = (event) => {
+        setVideoFile(event.target.files[0])
+    }
+    const thumbnailFileSelect = (event) => {
+        setThumbnailFile(event.target.files[0])
+    }
 
+    const [inputField, setInputField] = useState({
+        name: '',
+        description: '',
+    })
+
+    const inputsHandler = (e) => {
+        const { name, value } = e.target;
+        setInputField((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+
+    let [nameError, setNameError] = useState('');
+    let [descriptionError, setDescriptionError] = useState('');
+    let [brandError, setBrandError] = useState('');
+    let [categoryError, setCategoryError] = useState('');
+    let [subcategoryError, setSubcategoryError] = useState('');
+    let [videoFileError, setVideoFileError] = useState('');
+    const validation = () => {
+        var a = 0;
+        if (inputField.name === '') {
+            setNameError('Please enter product name');
+        } else {
+            setNameError('');
+            ++a;
+        }
+        if (inputField.description === '') {
+            setDescriptionError('Please enter product description');
+        } else {
+            setDescriptionError('');
+            ++a;
+        }
+        if (brand === '') {
+            setBrandError('Please select brand');
+        } else {
+            setBrandError('');
+            ++a;
+        }
+        if (category === '') {
+            setCategoryError('Please select category');
+        } else {
+            setCategoryError('');
+            ++a;
+        }
+        if (subcategory === '') {
+            setSubcategoryError('Please select sub-category');
+        } else {
+            setSubcategoryError('');
+            ++a;
+        }
+        if (videoFile === null) {
+            setVideoFileError('Please insert video');
+        } else {
+            if (videoFile.size < 4000000) {
+                var fields = videoFile.type.split('/');
+                if (fields[0] == 'video') {
+                    setVideoFileError('');
+                    ++a;
+                } else {
+                    setVideoFileError('Please insert video file only');
+                }
+            } else {
+                setVideoFileError('Video size must be less than 4 MB');
+            }
+        }
+        return a;
+    }
+
+    const addProduct = (e) => {
+        e.preventDefault();
+        validation();
+        // let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE2NDYxNTAzMDQsImV4cCI6MTY0ODc0MjMwNH0.qqgZmIJU6rjjQJfJ0nMScDhlFLnssC35ozSpLzIMMvo';
+        // const headers = {
+        //     Authorization: `Bearer ${token}`,
+        //     'Content-Type': 'multipart/form-data'
+        // }
+
+        if (1) {
+            const formData = new FormData();
+            formData.append('name', inputField.name);
+            formData.append('sub_info', inputField.description);
+            formData.append('description', inputField.description);
+            formData.append('brand_id', brand);
+            formData.append('category_id', category);
+            formData.append('sub_category_id', subcategory);
+            formData.append('video', videoFile);
+            //formData.append('video_thumbnail', thumbnailFile);
+            console.log(formData.get('video'));
+
+            // productService.insertProduct(formData).then((res) => {
+            //     console.log(res);
+            // }).catch((err) => {
+            //     console.log(err);
+            // })
+        }
+
+
+        // axios.post('https://apimvp.deepchainlabs.com/api/v1/products', formData, { headers })
+        //     .then(response => { console.log(response) })
+        //     .catch(error => {
+        //         console.error('There was an error!', error);
+        //     });
+    }
+
+
+
+    // *****
+    // Add Barnd, Category and Sub Category
+    // *****
+    const [radio, setRadio] = useState("radioA");
+    let [brandName, setBrandName] = useState('');
+    let [categoryName, setCategoryName] = useState('');
+    let [categoryIcon, setCategoryIcon] = useState(null);
+    let [subCategoryName, setSubCategoryName] = useState('');
     let [cat2, setCat2] = useState('');
+
+
+    const handleCategoryFileSelect = (event) => {
+        setCategoryIcon(event.target.files[0]);
+    }
+
     const categoryHandler2 = (e) => {
         setCat2(e.target.value);
     }
 
     const addInfo = () => {
         if (radio === 'radioA') {
-            brandService.insertBrand({ name: brandName }).then((res) => {
-                if (res.status === 'success') {
-                    console.log(res);
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
+            if (brandName !== '') {
+                const formData1 = new FormData();
+                formData1.append('name', brandName);
+                console.log(formData1.get('name'));
+                brandService.insertBrand(formData1).then((res) => {
+                    if (res.status === 'success') {
+                        console.log(res);
+                        document.getElementById("addInfoModal").classList.remove("show", "d-block");
+                        document.querySelectorAll(".modal-backdrop")
+                            .forEach(el => el.classList.remove("modal-backdrop"));
+                        toast.success('Category added successfuly!', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        navigate('/admins/dashboard');
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            } else {
+                toast.error('Please enter brand name!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
         }
         if (radio === 'radioB') {
-            const formData = new FormData();
-            formData.append('name', categoryName);
-            formData.append('icon', categoryIcon);
-            categoryService.insertCategory(formData).then((res) => {
-                if (res.status === 'success') {
-                    setDone(true);
-                    document.getElementById("addInfoModal").classList.remove("show", "d-block");
-                    document.querySelectorAll(".modal-backdrop")
-                        .forEach(el => el.classList.remove("modal-backdrop"));
-                    toast.success('Category added successfuly!', {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
+            if (categoryName !== '' && categoryIcon !== null) {
+                const formData2 = new FormData();
+                formData2.append('name', categoryName);
+                formData2.append('icon', categoryIcon);
+                categoryService.insertCategory(formData2).then((res) => {
+                    if (res.status === 'success') {
+                        document.getElementById("addInfoModal").classList.remove("show", "d-block");
+                        document.querySelectorAll(".modal-backdrop")
+                            .forEach(el => el.classList.remove("modal-backdrop"));
+                        toast.success('Category added successfuly!', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        navigate('/admins/dashboard');
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            } else if (categoryName == '') {
+                toast.error('Please enter category name!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else if (categoryIcon == null) {
+                toast.error('Please add category icon!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+
         }
         if (radio === 'radioC') {
-            subCategoryService.insertSubCategory({ name: subCategoryName, category_id: cat2 }).then((res) => {
-                if (res.status === 'success') {
-                    console.log(res);
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
+            if (subCategoryName !== '' && cat2 !== '') {
+                const formData3 = new FormData();
+                formData3.append('name', subCategoryName);
+                formData3.append('category_id', cat2);
+                subCategoryService.insertSubCategory(formData3).then((res) => {
+                    if (res.status === 'success') {
+                        console.log(res);
+                        document.getElementById("addInfoModal").classList.remove("show", "d-block");
+                        document.querySelectorAll(".modal-backdrop")
+                            .forEach(el => el.classList.remove("modal-backdrop"));
+                        toast.success('Sub-category added successfuly!', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                        navigate('/admins/dashboard');
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            } else if (cat2 === '') {
+                toast.error('Please select a category!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } else if (subCategoryName === '') {
+                toast.error('Please enter sub-category name!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
         }
     }
 
-    useEffect(() => {
-        if (done) {
-            setCategoryName('');
-            setCategoryIcon(null);
-        }
-    }, [done])
 
     return (
         <>
@@ -288,8 +414,14 @@ function Products() {
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
                                                 </select><br />
+                                                <p className="errorMssg">{brandError}</p>
+
                                                 <label className='nameLabel'>Product Name<sup className='text-danger'>*</sup></label><input type="text" className="itemName" name="name" onChange={inputsHandler} value={inputField.name} /><br />
+                                                <p className="errorMssg">{nameError}</p>
+
                                                 <label className='desLabel'>Description<sup className='text-danger'>*</sup></label><input type="text" className="description" name="description" onChange={inputsHandler} value={inputField.description} /><br />
+                                                <p className="errorMssg">{descriptionError}</p>
+
                                                 <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
                                                 <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler}>
                                                     <option value="0">Select a category</option>
@@ -297,6 +429,8 @@ function Products() {
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
                                                 </select><br />
+                                                <p className="errorMssg">{categoryError}</p>
+
                                                 <label className='nameLabel'>Sub Category<sup className='text-danger'>*</sup></label>
                                                 <select name="brands" id="barnds" className='subcategory text-white' onChange={subCategoryHandler}>
                                                     <option value="0">Select a subcategory</option>
@@ -305,14 +439,18 @@ function Products() {
                                                     ))}
                                                 </select>
                                                 <br />
+                                                <p className="errorMssg">{subcategoryError}</p>
+
                                                 <label className='videoLabel'>Video<sup className='text-danger'>*</sup></label>
                                                 <label className="custom-file-upload1 text-white">
-                                                    <input type="file" onChange={handleFileSelect1} />
+                                                    <input type="file" onChange={videoFileSelect} />
                                                     Upload <i className="fa-solid fa-arrow-up"></i>
                                                 </label><br />
+                                                <p className="errorMssg">{videoFileError}</p>
+
                                                 <label className='thumbLabel'>Thumbnail</label>
                                                 <label className="custom-file-upload2 text-white">
-                                                    <input type="file" name='thumb' onChange={handleFileSelect2} />
+                                                    <input type="file" name='thumb' onChange={thumbnailFileSelect} />
                                                     Upload <i className="fa-solid fa-arrow-up"></i>
                                                 </label><br />
                                             </div>

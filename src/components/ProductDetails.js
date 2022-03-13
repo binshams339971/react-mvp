@@ -27,8 +27,8 @@ toast.configure();
 export default function ProductDetails() {
     let id = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
-    let [identifier, setIdentifier] = useState(
-        searchParams.get("identifier")
+    let [referralToken, setReferralToken] = useState(
+        searchParams.get("refertoken")
     );
     let [path, setPath] = useState('');
     let [referToken, setReferToken] = useState('');
@@ -40,8 +40,8 @@ export default function ProductDetails() {
     let [shareLink, setShareLink] = useState('');
 
     useEffect(() => {
-        //console.log(identifier);
-        productService.getProducts({ identifier: identifier }).then((product) => {
+        //console.log(referralToken);
+        productService.getProducts({ identifier: id.identifier }).then((product) => {
             if (product.status == 'success') {
                 setProd(product.data);
                 fileService.getVideoStreamingURL(product.data[0].video_src).then((vid) => {
@@ -73,38 +73,87 @@ export default function ProductDetails() {
         }));
     }
 
-    const submitButton = () => {
-        setLoading2(true);
-        userService.insertUser({ name: inputField.name, email: inputField.email, phone_number: inputField.phone }).then((res) => {
-            if (res.status == 'success') {
-                referralService.insertReferral({ user_id: res?.data.id, product_id: id.pId, platform: social }).then((res) => {
-                    if (res.status == 'success') {
-                        setReferToken(res?.data.id.referral_token);
-                        setInputField({ name: '', email: '', phone: '' });
-                        setSocial('');
-                        setLoading(false);
-                        setLoading2(false);
-                        document.getElementById("submitModal").classList.remove("show", "d-block");
-                        document.querySelectorAll(".modal-backdrop")
-                            .forEach(el => el.classList.remove("modal-backdrop"));
-                        setShareLink(res?.data.id.referral_token);
-                        handleClickOpen();
-                        toast.success('Submitted successfuly!', {
-                            position: "top-right",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        });
-                    } else {
+    const validateEmail = (email) => {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
 
-                    }
-                }).catch((err) => {
-
-                })
+    let [nameError, setNameError] = useState('');
+    let [emailError, setEmailError] = useState('');
+    let [phoneError, setPhoneError] = useState('');
+    const validation = () => {
+        var a = 0;
+        if (inputField.name === '') {
+            setNameError('Please enter your name');
+        } else {
+            setNameError('');
+            ++a;
+        }
+        if (inputField.email === '') {
+            setEmailError('Please enter your email');
+        } else {
+            if (validateEmail(inputField.email) !== null) {
+                setEmailError('');
+                ++a;
             } else {
+                setEmailError('Please valid email');
+            }
+        }
+        if (inputField.phone === '') {
+            setPhoneError('Please enter your phone number');
+        } else {
+            setPhoneError('');
+            ++a;
+        }
+        return a;
+    }
+    const submitButton = () => {
+        validation();
+        if (validation() === 3) {
+            setLoading2(true);
+            userService.insertUser({ name: inputField.name, email: inputField.email, phone_number: inputField.phone }).then((res) => {
+                if (res.status == 'success') {
+                    referralService.insertReferral({ user_id: res?.data.id, product_id: id.pId, platform: social }).then((res) => {
+                        if (res.status == 'success') {
+                            setReferToken(res?.data.id.referral_token);
+                            setInputField({ name: '', email: '', phone: '' });
+                            setSocial('');
+                            setLoading(false);
+                            setLoading2(false);
+                            document.getElementById("submitModal").classList.remove("show", "d-block");
+                            document.querySelectorAll(".modal-backdrop")
+                                .forEach(el => el.classList.remove("modal-backdrop"));
+                            setShareLink(res?.data.id.referral_token);
+                            handleClickOpen();
+                            toast.success('Submitted successfuly!', {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        } else {
+
+                        }
+                    }).catch((err) => {
+
+                    })
+                } else {
+                    setLoading(false);
+                    toast.error('Submission failed!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch((err) => {
                 setLoading(false);
                 toast.error('Submission failed!', {
                     position: "top-right",
@@ -115,19 +164,9 @@ export default function ProductDetails() {
                     draggable: true,
                     progress: undefined,
                 });
-            }
-        }).catch((err) => {
-            setLoading(false);
-            toast.error('Submission failed!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        })
+            })
+        };
+
     }
 
     const handleSocial = (value) => {
@@ -147,7 +186,7 @@ export default function ProductDetails() {
     };
 
     const handleCopy = () => {
-        navigator.clipboard.writeText("http://mvp.deepchainlabs.com".concat(path).concat("?refertoken=").concat(referToken));
+        navigator.clipboard.writeText("http://mvp.deepchainlabs.com".concat(path).concat("/?refertoken=").concat(referToken));
         setCopy('Copied')
     };
 
@@ -225,11 +264,11 @@ export default function ProductDetails() {
                                             <p className="text-center" style={{ marginBottom: "0px" }}>For <strong>{social}</strong> share</p>
                                             <div className="mt-2 text-center infos">
                                                 <input type="text" name="name" onChange={inputsHandler} value={inputField.name} placeholder="Your name" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
+                                                {nameError && <p className="errorMsg">{nameError}</p>}
                                                 <input type="text" name="email" onChange={inputsHandler} value={inputField.email} placeholder="youremail@email.com" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
+                                                {emailError && <p className="errorMsg">{emailError}</p>}
                                                 <input type="text" name="phone" onChange={inputsHandler} value={inputField.phone} placeholder="Your Phone" style={{ margin: "5px 0", border: "none", background: "#E5E5E5" }}></input><br />
-
+                                                {phoneError && <p className="errorMsg">{phoneError}</p>}
                                                 <button onClick={submitButton} className="mt-2" style={{ background: "#1C4A45", color: "white", padding: "0 20px" }}>
                                                     Submit
                                                     {loading2 && <CircularProgress size={12} style={{ 'color': 'yellow' }} className='ml-3' />}
@@ -254,7 +293,7 @@ export default function ProductDetails() {
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                <p style={{ fontSize: "14px" }}>http://mvp.deepchainlabs.com{path}?refertoken={referToken}</p>
+                                <p style={{ fontSize: "14px" }}>http://mvp.deepchainlabs.com{path}/?refertoken={referToken}</p>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

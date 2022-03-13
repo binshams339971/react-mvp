@@ -21,17 +21,29 @@ function AdminSidebar() {
         navigate('/');
     }
     return (
-        <div className="col-md-3 sideMenu">
-            <h3 className="menuHeader">Categories</h3>
-            <ul className="catList">
-                <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>Dashboard</li></NavLink>
-                <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
-                <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
-            </ul>
-            <div className='signOut text-center'>
-                <a onClick={signOutButton} className="signOutBtn">Sign out</a>
+        <>
+            <div className="col-md-3 sideMenu">
+                <h3 className="menuHeader">Categories</h3>
+                <ul className="catList">
+                    <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>Dashboard</li></NavLink>
+                    <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
+                    <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
+                </ul>
+                <div className='signOut text-center'>
+                    <a onClick={signOutButton} className="signOutBtn">Sign out</a>
+                </div>
             </div>
-        </div>
+            <div className='mobileMenu'>
+                <ul className="">
+                    <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'activeLink' : 'inActiveLink')}><li>Dashboard</li></NavLink>
+                    <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'activeLink' : 'inActiveLink')}><li>Product's</li></NavLink>
+                    <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'activeLink' : 'inActiveLink')}><li>User's</li></NavLink>
+                    {/* <li>Dashboard</li>
+                    <li>Products</li>
+                    <li>Users</li> */}
+                </ul>
+            </div>
+        </>
     )
 }
 

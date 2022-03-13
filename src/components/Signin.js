@@ -29,23 +29,57 @@ function Signin() {
         }));
     }
 
-    const submitButton = () => {
-        setLoading(true);
-        authService.login({ username: inputField.username, password: inputField.password }).then((res) => {
-            if (res.status === 'success') {
-                setLoading(false);
-                toast.success('Sign in successful!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                navigate("/admins/dashboard");
+    let [userNameError, setUserNameError] = useState('');
+    let [passwordError, setPasswordError] = useState('');
 
-            } else {
+    const validation = () => {
+        var a = 0;
+        if (inputField.username === '') {
+            setUserNameError('Please enter username');
+        } else {
+            setUserNameError('');
+            ++a;
+        }
+        if (inputField.password === '') {
+            setPasswordError('Please enter password');
+        } else {
+            setPasswordError('');
+            ++a;
+        }
+        return a;
+    }
+
+    const submitButton = () => {
+        validation();
+        if (validation() == 2) {
+            setLoading(true);
+            authService.login({ username: inputField.username, password: inputField.password }).then((res) => {
+                if (res.status === 'success') {
+                    setLoading(false);
+                    toast.success('Sign in successful!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    navigate("/admins/dashboard");
+
+                } else {
+                    setLoading(false);
+                    toast.error('Sign in failed!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch((error) => {
                 setLoading(false);
                 toast.error('Sign in failed!', {
                     position: "top-right",
@@ -56,19 +90,8 @@ function Signin() {
                     draggable: true,
                     progress: undefined,
                 });
-            }
-        }).catch((error) => {
-            setLoading(false);
-            toast.error('Sign in failed!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        })
+            })
+        }
     }
     return (
         <div className="container" id="content">
@@ -89,8 +112,10 @@ function Signin() {
                         <div className='signin d-block'>
                             <p>Username</p>
                             <input type="text" id="ip2" name="username" onChange={inputsHandler} value={inputField.username} />
+                            {userNameError && <div className="errMsg">{userNameError}</div>}
                             <p>Password</p>
                             <input type="password" id="ip3" name="password" onChange={inputsHandler} value={inputField.password} />
+                            {passwordError && <div className="errMsg">{passwordError}</div>}
                             <div className='d-flex justify-content-between'>
                                 <div className="form-group">
                                     <input type="checkbox" id="check" />

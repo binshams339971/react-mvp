@@ -85,7 +85,7 @@ input:focus{
     color: white;
     padding-left: 15px;
     height: 35px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .inputs .description{
@@ -97,7 +97,7 @@ input:focus{
     color: white;
     padding-left: 15px;
     height: 55px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .category{
@@ -246,3 +246,13 @@ input[type="file"] {
     }
 }
 
+.errorMssg{
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    margin: 0;
+    margin-left: 160px;
+    margin-bottom: 10px;
+    text-align: left;
+}

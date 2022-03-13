@@ -17,24 +17,70 @@ function Feedback() {
     };
     let navigate = useNavigate();
     const submitButton = () => {
-        setLoading(true);
-        feedbackService.insertFeedback({ description: comment, rating: rating }).then((res) => {
-            if (res.status == 'success') {
-                setRating(0);
-                setComment("");
-                setRadio(0);
-                setLoading(false);
-                toast.success('Feedback submitted successfuly!', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                navigate('/');
-            } else {
+        if (!rating) {
+            toast.error('Please give rating!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        if (comment === '') {
+            toast.error('Please write comment!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        if (!radio) {
+            toast.error('Please select How was your Experience?', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        if (rating && comment !== '' && radio) {
+            setLoading(true);
+            feedbackService.insertFeedback({ description: comment, rating: rating }).then((res) => {
+                if (res.status == 'success') {
+                    setRating(0);
+                    setComment("");
+                    setRadio(0);
+                    setLoading(false);
+                    toast.success('Feedback submitted successfuly!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    navigate('/');
+                } else {
+                    setLoading(false);
+                    toast.error('Feedback submission failed!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }).catch((err) => {
                 setLoading(false);
                 toast.error('Feedback submission failed!', {
                     position: "top-right",
@@ -45,21 +91,10 @@ function Feedback() {
                     draggable: true,
                     progress: undefined,
                 });
-            }
-        }).catch((err) => {
-            setLoading(false);
-            toast.error('Feedback submission failed!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        })
+            })
+        }
     }
-    //console.log(radio);
+
     return (
         <div className="container" id="content">
             <div className='d-flex justify-content-between'>
@@ -105,7 +140,7 @@ function Feedback() {
                     </div>
                 </div>
                 <br />
-                <button className="send-btn" onClick={submitButton}>
+                <button className="send-btn mb-4" onClick={submitButton}>
                     Send Now
                     {loading && <CircularProgress size={26} style={{ 'color': 'yellow' }} className='ml-3' />}
                 </button>
