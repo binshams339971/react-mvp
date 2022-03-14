@@ -38,31 +38,30 @@ function Sidebar(props) {
 
     return (
         <>
-            {!loading ?
-                <>
-                    <motion.div className="row side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }} style={{ height: bodyHeight }}>
-                        <h2 className="cat-header">Categories</h2>
-                        <ul className="cat-list">
-                            {categories?.map((c) => (
-                                <>
-                                    <Link to={`/category/${c.name}/${c.id}`} key={c.id}><li><i className="fa-solid fa-shirt"></i>{c.name}</li></Link>
-                                    <hr />
-                                </>
-                            ))}
-                        </ul>
-                        <div className='text-center' style={{ marginTop: "450px", marginBottom: "30px" }}>
-                            {isLoggedIn() ? <Link to='/admins/dashboard' className='sign-in-btn'>Dashboard</Link> : <Link to='/signin' className='sign-in-btn'>Sign in</Link>}
-                        </div>
-                        {/* <div className='text-center d-md-none d-block' style={{ marginBottom: "30px" }}>
+            <motion.div className="row side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }} style={{ height: bodyHeight }}>
+                <h2 className="cat-header">Categories</h2>
+                {!loading ?
+                    <ul className="cat-list">
+                        {categories?.map((c) => (
+                            <>
+                                <Link to={`/category/${c.name}/${c.id}`} key={c.id}><li><i className="fa-solid fa-shirt"></i>{c.name}</li></Link>
+                                <hr />
+                            </>
+                        ))}
+                    </ul> :
+                    <div className='row'>
+                        <Box sx={{ display: 'flex', marginTop: "300px", marginLeft: "100px", height: "500px" }}>
+                            <CircularProgress color='success' />
+                        </Box>
+                    </div>
+                }
+                <div className='text-center' style={{ marginTop: "450px", marginBottom: "30px" }}>
+                    {isLoggedIn() ? <Link to='/admins/dashboard' className='sign-in-btn'>Dashboard</Link> : <Link to='/signin' className='sign-in-btn'>Sign in</Link>}
+                </div>
+                {/* <div className='text-center d-md-none d-block' style={{ marginBottom: "30px" }}>
                             {isLoggedIn() && <Link to='/' className='sign-in-btn'>Sign Out</Link>}
                         </div> */}
-                    </motion.div >
-                </> : <div className='row'>
-                    <Box sx={{ display: 'flex', marginTop: "300px", marginLeft: "100px", height: "500px" }}>
-                        <CircularProgress color='success' />
-                    </Box>
-                </div>
-            }
+            </motion.div >
         </>
     )
 }
@@ -79,3 +78,31 @@ export default Sidebar;
     <a href="#"><li><span>-</span> Laptop</li></a>
 </ul>
 </> */}
+
+// {/* <>
+//     {!loading ?
+//         <>
+//             <motion.div className="row side-menu" id="sideMenu" animate={{ x: props.x }} transition={{ ease: "easeOut", duration: 1 }} style={{ height: bodyHeight }}>
+//                 <h2 className="cat-header">Categories</h2>
+//                 <ul className="cat-list">
+//                     {categories?.map((c) => (
+//                         <>
+//                             <Link to={`/category/${c.name}/${c.id}`} key={c.id}><li><i className="fa-solid fa-shirt"></i>{c.name}</li></Link>
+//                             <hr />
+//                         </>
+//                     ))}
+//                 </ul>
+//                 <div className='text-center' style={{ marginTop: "450px", marginBottom: "30px" }}>
+//                     {isLoggedIn() ? <Link to='/admins/dashboard' className='sign-in-btn'>Dashboard</Link> : <Link to='/signin' className='sign-in-btn'>Sign in</Link>}
+//                 </div>
+//                 {/* <div className='text-center d-md-none d-block' style={{ marginBottom: "30px" }}>
+//                             {isLoggedIn() && <Link to='/' className='sign-in-btn'>Sign Out</Link>}
+//                         </div> */}
+//             </motion.div >
+//         </> : <div className='row'>
+//     <Box sx={{ display: 'flex', marginTop: "300px", marginLeft: "100px", height: "500px" }}>
+//         <CircularProgress color='success' />
+//     </Box>
+// </div>
+//     }
+// </> * /}

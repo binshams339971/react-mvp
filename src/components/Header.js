@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
@@ -58,6 +58,15 @@ function Header() {
         });
         navigate('/');
     }
+    const buttonRef = useRef();
+
+    const handleMenuClick = () => {
+        if (admin) {
+            buttonRef.current.disabled = true;
+        } else {
+            setShow(!show);
+        }
+    }
     return (
         <nav className='nav'>
             <div className="header">
@@ -65,7 +74,7 @@ function Header() {
                     <div className="container">
                         <div className="row">
                             <div className="col-2">
-                                <a onClick={() => setShow(!show)} id="menu"><img className="mt-5" src={menuIcon} /></a>
+                                <a onClick={handleMenuClick} ref={buttonRef} id="menu"><img className="mt-5" src={menuIcon} /></a>
                             </div>
                             <>
                                 {!admin ?
