@@ -100,9 +100,10 @@ function Products() {
     const subCategoryHandler = (e) => {
         subcategory = e.target.value;
     };
-
+    let [a, setA] = useState(false)
     const videoFileSelect = (event) => {
         setVideoFile(event.target.files[0])
+        setA(true)
     }
     const thumbnailFileSelect = (event) => {
         setThumbnailFile(event.target.files[0])
@@ -180,13 +181,7 @@ function Products() {
     const addProduct = (e) => {
         e.preventDefault();
         validation();
-        // let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE2NDYxNTAzMDQsImV4cCI6MTY0ODc0MjMwNH0.qqgZmIJU6rjjQJfJ0nMScDhlFLnssC35ozSpLzIMMvo';
-        // const headers = {
-        //     Authorization: `Bearer ${token}`,
-        //     'Content-Type': 'multipart/form-data'
-        // }
-
-        if (1) {
+        if (validation() === 6) {
             const formData = new FormData();
             formData.append('name', inputField.name);
             formData.append('sub_info', inputField.description);
@@ -196,21 +191,55 @@ function Products() {
             formData.append('sub_category_id', subcategory);
             formData.append('video', videoFile);
             //formData.append('video_thumbnail', thumbnailFile);
-            console.log(formData.get('video'));
+            // console.log(formData.get('video'));
 
-            // productService.insertProduct(formData).then((res) => {
-            //     console.log(res);
-            // }).catch((err) => {
-            //     console.log(err);
-            // })
+            productService.insertProduct(formData).then((res) => {
+                if (res?.status === 'success') {
+                    document.getElementById("addProductsModal").classList.remove("show", "d-block");
+                    document.querySelectorAll(".modal-backdrop")
+                        .forEach(el => el.classList.remove("modal-backdrop"));
+                    toast.success('Product added successfuly!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    navigate('/admin/dashboard');
+                } else {
+                    toast.error('Failed! Internal Server error', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    document.getElementById("addProductsModal").classList.remove("show", "d-block");
+                    document.querySelectorAll(".modal-backdrop")
+                        .forEach(el => el.classList.remove("modal-backdrop"));
+                    navigate('/admins/dashboard');
+                }
+            }).catch((err) => {
+                toast.error('Failed! Internal Server error', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                document.getElementById("addProductsModal").classList.remove("show", "d-block");
+                document.querySelectorAll(".modal-backdrop")
+                    .forEach(el => el.classList.remove("modal-backdrop"));
+                navigate('/admins/dashboard');
+            })
         }
 
-
-        // axios.post('https://apimvp.deepchainlabs.com/api/v1/products', formData, { headers })
-        //     .then(response => { console.log(response) })
-        //     .catch(error => {
-        //         console.error('There was an error!', error);
-        //     });
     }
 
 
@@ -223,7 +252,7 @@ function Products() {
     let [categoryName, setCategoryName] = useState('');
     let [categoryIcon, setCategoryIcon] = useState(null);
     let [subCategoryName, setSubCategoryName] = useState('');
-    let [cat2, setCat2] = useState('');
+    let [cat2, setCat2] = useState(0);
 
 
     const handleCategoryFileSelect = (event) => {
@@ -232,6 +261,10 @@ function Products() {
 
     const categoryHandler2 = (e) => {
         setCat2(e.target.value);
+    }
+
+    const subcategoryInputHandler = (e) => {
+        setSubCategoryName(e.target.value);
     }
 
     const addInfo = () => {
@@ -255,7 +288,7 @@ function Products() {
                             draggable: true,
                             progress: undefined,
                         });
-                        navigate('/admins/dashboard');
+                        setBrandName('');
                     }
                 }).catch((err) => {
                     console.log(err);
@@ -291,7 +324,8 @@ function Products() {
                             draggable: true,
                             progress: undefined,
                         });
-                        navigate('/admins/dashboard');
+                        setCategoryName('');
+                        setCategoryIcon(null);
                     }
                 }).catch((err) => {
                     console.log(err);
@@ -330,6 +364,7 @@ function Products() {
                         document.getElementById("addInfoModal").classList.remove("show", "d-block");
                         document.querySelectorAll(".modal-backdrop")
                             .forEach(el => el.classList.remove("modal-backdrop"));
+
                         toast.success('Sub-category added successfuly!', {
                             position: "top-right",
                             autoClose: 3000,
@@ -339,7 +374,8 @@ function Products() {
                             draggable: true,
                             progress: undefined,
                         });
-                        navigate('/admins/dashboard');
+                        setSubCategoryName('');
+                        setCat2(0);
                     }
                 }).catch((err) => {
                     console.log(err);
@@ -409,7 +445,7 @@ function Products() {
                                             <div className='inputs'>
                                                 <label className='nameLabel'>Brand<sup className='text-danger'>*</sup></label>
                                                 <select name="brands" id="barnds" className='brand text-white' onChange={brandHandler}>
-                                                    <option value="0">Select brand</option>
+                                                    <option value='0'>Select brand</option>
                                                     {brands?.map((b) => (
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
@@ -424,7 +460,7 @@ function Products() {
 
                                                 <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
                                                 <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler}>
-                                                    <option value="0">Select a category</option>
+                                                    <option value='0'>Select a category</option>
                                                     {categories?.map((b) => (
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
@@ -433,7 +469,7 @@ function Products() {
 
                                                 <label className='nameLabel'>Sub Category<sup className='text-danger'>*</sup></label>
                                                 <select name="brands" id="barnds" className='subcategory text-white' onChange={subCategoryHandler}>
-                                                    <option value="0">Select a subcategory</option>
+                                                    <option value='0'>Select a subcategory</option>
                                                     {subCategories?.map((b) => (
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
@@ -445,7 +481,7 @@ function Products() {
                                                 <label className="custom-file-upload1 text-white">
                                                     <input type="file" onChange={videoFileSelect} />
                                                     Upload <i className="fa-solid fa-arrow-up"></i>
-                                                </label><br />
+                                                </label><span style={{ fontSize: "12px" }}>{videoFile && videoFile.name}</span><br />
                                                 <p className="errorMssg">{videoFileError}</p>
 
                                                 <label className='thumbLabel'>Thumbnail</label>
@@ -492,13 +528,13 @@ function Products() {
                                         <hr />
                                         {radio === 'radioA' &&
                                             <>
-                                                <label className='nameLabel'>Brand Name<sup className='text-danger'>*</sup></label><input type="text" className="brandName" name="brandName" onChange={event => setBrandName(event.target.value)} />
+                                                <label className='nameLabel'>Brand Name<sup className='text-danger'>*</sup></label><input type="text" className="brandName" name="brandName" value={brandName} onChange={event => setBrandName(event.target.value)} />
                                                 <br />
                                             </>
                                         }
                                         {radio === 'radioB' &&
                                             <>
-                                                <label className='nameLabel'>Category Name<sup className='text-danger'>*</sup></label><input type="text" className="categoryName" name="categoryname" onChange={event => setCategoryName(event.target.value)} />
+                                                <label className='nameLabel'>Category Name<sup className='text-danger'>*</sup></label><input type="text" className="categoryName" name="categoryname" value={categoryName} onChange={event => setCategoryName(event.target.value)} />
                                                 <br />
                                                 <label className='thumbLabel'>Category Icon<sup className='text-danger'>*</sup></label>
                                                 <label className="custom-file-upload3 text-white">
@@ -510,13 +546,13 @@ function Products() {
                                         {radio === 'radioC' &&
                                             <>
                                                 <label className='nameLabel'>Category<sup className='text-danger'>*</sup></label>
-                                                <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler2}>
-                                                    <option value="0">Select a category</option>
+                                                <select name="brands" id="barnds" className='category text-white' onChange={categoryHandler2} value={cat2}>
+                                                    <option>Select a category</option>
                                                     {categories?.map((b) => (
                                                         <option key={b.id} value={b.id}>{b.name}</option>
                                                     ))}
                                                 </select><br />
-                                                <label className='nameLabelSub'>Sub Category<sup className='text-danger'>*</sup></label><input type="text" className="subcategoryName" name="subcategoryName" onChange={event => setSubCategoryName(event.target.value)} />
+                                                <label className='nameLabelSub'>Sub Category<sup className='text-danger'>*</sup></label><input type="text" className="subcategoryName" name="subcategoryName" value={subCategoryName} onChange={subcategoryInputHandler} />
                                                 <br />
                                             </>
                                         }

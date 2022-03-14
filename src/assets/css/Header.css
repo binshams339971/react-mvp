@@ -41,3 +41,28 @@
 #menu{
     cursor: pointer;
 }
+
+.navLinks a{
+    margin: 0 40px;
+}
+@media only screen and (max-width: 770px){
+    .navLinks a{
+        margin: 0 10px;
+    }
+}
+
+.signOutBtn1{
+    background: #E3FC52;
+    border-radius: 28px;
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #325654;
+    font-size: 16px;
+    padding: 10px 20px 10px 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signOutBtn1:hover{
+    text-decoration: none;
+    cursor: pointer;
+}

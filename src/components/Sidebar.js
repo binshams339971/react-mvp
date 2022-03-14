@@ -36,18 +36,6 @@ function Sidebar(props) {
         });
     }, []);
 
-    const getSubCat = (id) => {
-        subCategoryService.getSubCategories({ category_id: id }).then((subcats) => {
-            if (subcats.status == 'success') {
-                //console.log(subcats.data);
-                setSubCategories(subcats.data);
-            } else {
-                console.log("Failed");
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
     return (
         <>
             {!loading ?
@@ -65,6 +53,9 @@ function Sidebar(props) {
                         <div className='text-center' style={{ marginTop: "450px", marginBottom: "30px" }}>
                             {isLoggedIn() ? <Link to='/admins/dashboard' className='sign-in-btn'>Dashboard</Link> : <Link to='/signin' className='sign-in-btn'>Sign in</Link>}
                         </div>
+                        {/* <div className='text-center d-md-none d-block' style={{ marginBottom: "30px" }}>
+                            {isLoggedIn() && <Link to='/' className='sign-in-btn'>Sign Out</Link>}
+                        </div> */}
                     </motion.div >
                 </> : <div className='row'>
                     <Box sx={{ display: 'flex', marginTop: "300px", marginLeft: "100px", height: "500px" }}>

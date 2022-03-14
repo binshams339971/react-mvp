@@ -17,6 +17,7 @@ export default function ProductDetails() {
     let [video, setVideo] = useState();
     let [share, setShare] = useState(0);
     let [shareUser, setShareUser] = useState(0);
+    let [shareUserDetails, setShareUserDetails] = useState([]);
     useEffect(() => {
         productService.getProductById(id.pId).then((product) => {
             if (product.status == 'success') {
@@ -35,6 +36,21 @@ export default function ProductDetails() {
             console.log(error);
         });
     }, []);
+
+    useEffect(() => {
+        referralService.getReferrals({ product_id: id.pId }).then((res) => {
+            if (res?.status == 'success') {
+                setShareUserDetails(res?.data);
+                setLoading(false);
+            }
+        }).catch((err) => {
+            setShare(0);
+            setLoading(false);
+        })
+    }, []);
+    useEffect(() => {
+    }, [shareUserDetails]);
+
 
     useEffect(() => {
         referralService.getTotalShareCountByProductId(id.pId).then((res) => {
@@ -59,21 +75,6 @@ export default function ProductDetails() {
             setLoading(false);
         })
     }, []);
-
-    var referers = [
-        {
-            id: 1,
-            name: "ABC",
-            media: "Facebook",
-            count: 5
-        },
-        {
-            id: 5,
-            name: "XYZ",
-            media: "Twitter",
-            count: 2
-        }
-    ]
 
     return (
         <>
@@ -122,7 +123,7 @@ export default function ProductDetails() {
                                 </div>
                             </div>
                             <h3 className='text-center' style={{ color: "#4A4A4A", fontSize: "36px" }}>Referral history</h3>
-                            <CustomPaginationActionsTable data={referers} />
+                            <CustomPaginationActionsTable data={shareUserDetails} />
                             {/* <h3 className='text-center' style={{ color: "#4A4A4A", fontSize: "36px" }}>{prod?.name}</h3>
                             <div className='mt-4'>
                                 <div className='d-flex justify-content-center mb-4 mt-md-3 mt-0'>

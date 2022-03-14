@@ -29,9 +29,9 @@ function AdminSidebar() {
                     <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
                     <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
                 </ul>
-                <div className='signOut text-center'>
+                {/* <div className='signOut text-center'>
                     <a onClick={signOutButton} className="signOutBtn">Sign out</a>
-                </div>
+                </div> */}
             </div>
             <div className='mobileMenu'>
                 <ul className="">

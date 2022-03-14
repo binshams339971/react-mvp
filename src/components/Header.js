@@ -4,10 +4,14 @@ import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
 import logo from '../assets/images/logo.png'
 import Sidebar from "./Sidebar.js";
-import Home from "./Home";
+import { logout } from '../helpers/authHelper';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 function Header() {
     const [show, setShow] = useState();
+    const [admin, setAdmin] = useState(false);
     const y = document.getElementById("content");
     useEffect(() => {
         if (y != null) {
@@ -31,35 +35,61 @@ function Header() {
             setLoc(location.pathname);
         }
     });
+
+    useEffect(() => {
+        if (location.pathname.match("/admins")) {
+            setAdmin(true);
+        } else {
+            setAdmin(false);
+        }
+    });
+
+    let navigate = useNavigate();
+    const signOutButton = () => {
+        logout();
+        toast.success('Sign out successful!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+        navigate('/');
+    }
     return (
         <nav className='nav'>
             <div className="header">
                 <div className="header-bottom">
                     <div className="container">
                         <div className="row">
-                            <div className="col-1">
+                            <div className="col-2">
                                 <a onClick={() => setShow(!show)} id="menu"><img className="mt-5" src={menuIcon} /></a>
                             </div>
-                            <div className="col-3">
-                                {/* <!-- <img className="" src="search-box.png" style="height: 50%; margin-top: 32px;" /> --> */}
-                            </div>
-                            <div className="col-4"></div>
-                            <div className="col-2 d-md-block d-none" style={{ marginTop: "40px" }}>
-                                <NavLink to="/information" className='d-flex text-white' style={{ textDecoration: "none" }}>
-                                    <span className="material-icons-outlined mr-2">
-                                        info
-                                    </span>
-                                    <p>Information</p>
-                                </NavLink>
-                            </div>
-                            <div className="col-2 d-md-block d-none" style={{ marginTop: "40px" }}>
-                                <NavLink to="/feedback" className='d-flex text-white' style={{ textDecoration: "none" }}>
-                                    <span className="material-icons-outlined mr-2">
-                                        chat
-                                    </span>
-                                    <p>Feedback</p>
-                                </NavLink>
-                            </div>
+                            <>
+                                {!admin ?
+                                    <div className="d-flex col-10 justify-content-end navLinks" style={{ marginTop: "40px" }}>
+                                        <NavLink to="/information" className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                            <span className="material-icons-outlined mr-2">
+                                                info
+                                            </span>
+                                            <p>Information</p>
+                                        </NavLink>
+                                        <NavLink to="/feedback" className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                            <span className="material-icons-outlined mr-2">
+                                                chat
+                                            </span>
+                                            <p>Feedback</p>
+                                        </NavLink>
+                                    </div> :
+                                    <>
+                                        <div className="d-flex col-10 justify-content-end" style={{ marginTop: "30px" }}>
+                                            <a onClick={signOutButton} className="signOutBtn1">Sign out</a>
+                                        </div>
+                                    </>
+                                }
+                            </>
                         </div>
                     </div>
                 </div>

@@ -109,9 +109,9 @@ export default function CustomPaginationActionsTable(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell style={{ fontWeight: "bold" }}>User ID</TableCell>
-                        <TableCell align="left">User Name</TableCell>
-                        <TableCell align="left">Share Media</TableCell>
-                        <TableCell align="left">Count</TableCell>
+                        <TableCell align="left">Platform</TableCell>
+                        <TableCell align="left">Referral Token</TableCell>
+                        <TableCell align="left">Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -119,18 +119,18 @@ export default function CustomPaginationActionsTable(props) {
                         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : rows
                     ).map((row) => (
-                        <TableRow key={row.id} onClick={() => handleItemClick(row.id)} style={{ cursor: "pointer" }}>
+                        <TableRow key={row?.id.id} style={{ cursor: "pointer" }}>
                             <TableCell component="th" scope="row">
-                                {row.id}
+                                {row?.id.user_id}
                             </TableCell>
                             <TableCell align="left">
-                                {row.name}
+                                {row?.id.platform}
                             </TableCell>
                             <TableCell align="left">
-                                {row.media}
+                                {row?.id.referral_token}
                             </TableCell>
                             <TableCell align="left">
-                                {row.count}
+                                {row?.id.createdAt}
                             </TableCell>
                         </TableRow>
                     ))}

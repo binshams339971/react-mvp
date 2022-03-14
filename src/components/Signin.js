@@ -119,7 +119,7 @@ function Signin() {
                             <div className='d-flex justify-content-between'>
                                 <div className="form-group">
                                     <input type="checkbox" id="check" />
-                                    <label htmlFor="check">Remember me</label>
+                                    <label htmlFor="check" id="check1">Remember me</label>
                                 </div>
                                 <a href="#" className='forgot'>Forgot Password?</a>
                             </div>
