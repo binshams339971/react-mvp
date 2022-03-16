@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { logout } from '../../helpers/authHelper';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import dashboardIcon from '../../assets/images/dashboard.png'
+import productIcon from '../../assets/images/products.png'
+import userIcon from '../../assets/images/users.png'
 toast.configure();
 function AdminSidebar() {
     let navigate = useNavigate();
@@ -25,13 +28,13 @@ function AdminSidebar() {
             <div className="col-md-3 sideMenu">
                 <h3 className="menuHeader">Categories</h3>
                 <ul className="catList">
-                    <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>Dashboard</li></NavLink>
-                    <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-shirt"></i>Product's</li></NavLink>
-                    <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><i className="fa-solid fa-headset"></i>User's</li></NavLink>
+                    <NavLink to="/admins/dashboard" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><img src={dashboardIcon} className="dashboardIcn" />Dashboard</li></NavLink>
+                    <NavLink to="/admins/products" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><img src={productIcon} className="dashboardIcn" />Product Management</li></NavLink>
+                    <NavLink to="/admins/users" className={({ isActive }) => (isActive ? 'active' : 'inactive')}><li><img src={userIcon} className="userIcn" />Customer Information</li></NavLink>
                 </ul>
-                {/* <div className='signOut text-center'>
+                <div className='signOut text-center'>
                     <a onClick={signOutButton} className="signOutBtn">Sign out</a>
-                </div> */}
+                </div>
             </div>
             <div className='mobileMenu'>
                 <ul className="">

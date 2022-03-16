@@ -43,10 +43,10 @@ function Sidebar(props) {
                 {!loading ?
                     <ul className="cat-list">
                         {categories?.map((c) => (
-                            <>
-                                <Link to={`/category/${c.name}/${c.id}`} key={c.id}><li><i className="fa-solid fa-shirt"></i>{c.name}</li></Link>
+                            <div key={c.id}>
+                                <Link to={`/category/${c.name}/${c.id}`}><li><i className="fa-solid fa-shirt"></i>{c.name}</li></Link>
                                 <hr />
-                            </>
+                            </div>
                         ))}
                     </ul> :
                     <div className='row'>

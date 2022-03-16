@@ -43,7 +43,7 @@ export default function ProductDetails() {
         //console.log(referralToken);
         productService.getProducts({ identifier: id.identifier }).then((product) => {
             if (product.status == 'success') {
-                setProd(product.data);
+                setProd(product.data[0]);
                 fileService.getVideoStreamingURL(product.data[0].video_src).then((vid) => {
                     if (vid.status == 'success') {
                         setVideo(vid.url);
@@ -211,7 +211,7 @@ export default function ProductDetails() {
                     <div className="d-flex mx-5">
                         <h3 className='' style={{ color: "#4A4A4A", fontSize: "28px" }}>{prod?.sub_info}</h3>
                         <div className="ml-auto my-auto mr-4">
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                                     favorite_border
                                 </span>
@@ -221,7 +221,7 @@ export default function ProductDetails() {
                                     share
                                 </span>
                             </a>
-                            <a href="#">
+                            <a href="javascript:void(0)">
                                 <span className="material-icons-outlined mx-2" style={{ fontSize: "40px", color: "#1C4A45" }}>
                                     chat_bubble_outline
                                 </span>

@@ -45,10 +45,28 @@
 .navLinks a{
     margin: 0 40px;
 }
+
+#signOutMobile{
+    display: none;
+}
+.navMobile{
+    display: block;
+}
+
+.serachImg{
+    margin-top: 35px;
+    height: 40px;
+}
+
 @media only screen and (max-width: 770px){
     .navLinks a{
         margin: 0 10px;
     }
+
+    .serachImg{
+        display: none;
+    }
+    
 }
 
 .signOutBtn1{

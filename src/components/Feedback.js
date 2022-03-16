@@ -128,13 +128,13 @@ function Feedback() {
                         <input type="radio" id="radioA" value="radioA" checked={radio === "radioA"} onChange={(e) => { setRadio(e.target.value) }} />
                         <input type="radio" id="radioB" value="radioB" checked={radio === "radioB"} onChange={(e) => { setRadio(e.target.value) }} />
                         <input type="radio" id="radioC" value="radioC" checked={radio === "radioC"} onChange={(e) => { setRadio(e.target.value) }} />
-                        <label for="radioA" className={radio == "radioA" ? "activeRadio" : ''}>
+                        <label htmlFor="radioA" className={radio == "radioA" ? "activeRadio" : ''}>
                             <span>Good</span>
                         </label>
-                        <label for="radioB" className={radio == "radioB" ? "activeRadio" : ''}>
+                        <label htmlFor="radioB" className={radio == "radioB" ? "activeRadio" : ''}>
                             <span>Average</span>
                         </label>
-                        <label for="radioC" className={radio == "radioC" ? "activeRadio" : ''} >
+                        <label htmlFor="radioC" className={radio == "radioC" ? "activeRadio" : ''} >
                             <span>Bad</span>
                         </label>
                     </div>

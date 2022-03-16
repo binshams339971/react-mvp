@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import '../assets/css/Header.css';
 import menuIcon from '../assets/images/menu-icon.png'
 import logo from '../assets/images/logo.png'
+import searchBox from '../assets/images/searchBox.png'
 import Sidebar from "./Sidebar.js";
 import { logout } from '../helpers/authHelper';
 import { toast } from 'react-toastify';
@@ -76,9 +77,12 @@ function Header() {
                             <div className="col-2">
                                 <a onClick={handleMenuClick} ref={buttonRef} id="menu"><img className="mt-5" src={menuIcon} /></a>
                             </div>
+                            <div className="col-2">
+                                {!admin && <img src={searchBox} className="serachImg" />}
+                            </div>
                             <>
                                 {!admin ?
-                                    <div className="d-flex col-10 justify-content-end navLinks" style={{ marginTop: "40px" }}>
+                                    <div className="d-flex col-8 justify-content-end navLinks" style={{ marginTop: "40px" }}>
                                         <NavLink to="/information" className='d-flex text-white' style={{ textDecoration: "none" }}>
                                             <span className="material-icons-outlined mr-2">
                                                 info
@@ -93,8 +97,22 @@ function Header() {
                                         </NavLink>
                                     </div> :
                                     <>
-                                        <div className="d-flex col-10 justify-content-end" style={{ marginTop: "30px" }}>
-                                            <a onClick={signOutButton} className="signOutBtn1">Sign out</a>
+                                        {/* <div className="d-flex col-10 justify-content-end" id='signOutMobile' style={{ marginTop: "30px" }}>
+                                            <a onClick={signOutButton} className="signOutBtn101">Sign out</a>
+                                        </div> */}
+                                        <div className="d-flex col-8 justify-content-end navLinks" style={{ marginTop: "40px" }}>
+                                            <NavLink to="/information" className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                                <span className="material-icons-outlined mr-2">
+                                                    info
+                                                </span>
+                                                <p>Information</p>
+                                            </NavLink>
+                                            <NavLink to="/feedback" className='d-flex text-white' style={{ textDecoration: "none" }}>
+                                                <span className="material-icons-outlined mr-2">
+                                                    chat
+                                                </span>
+                                                <p>Feedback</p>
+                                            </NavLink>
                                         </div>
                                     </>
                                 }

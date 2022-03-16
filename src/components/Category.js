@@ -63,7 +63,7 @@ export default function Category() {
                     <>
                         {subCategories?.map((s) => (
                             s.category_id == cId &&
-                            <div className='mt-3'>
+                            <div className='mt-3' key={s.id}>
                                 <h3 style={{ marginLeft: "5%" }}>{s.name}</h3>
                                 <Carousel breakPoints={breakPoints} >
                                     {product?.map((p) =>

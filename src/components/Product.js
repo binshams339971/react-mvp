@@ -73,16 +73,17 @@ function Product(props) {
                         <Carousel breakPoints={breakPoints} >
                             {product?.map((p) =>
                                 b.id === p.brand_id &&
-                                <div className="cards" key={p.id}>
-                                    <img className="card-img" src={`https://apimvp.deepchainlabs.com/${p.video_thumbnail_src}`} alt="abc" />
-                                    <div className="info">
-                                        <span>{p.name}<br />{p.sub_info}</span><br />
-                                        <Link to={`/details/${p.identifier}`} className="view_now-btn">View Now
-                                            <img src={playIcon} className="play-icon" />
-                                        </Link>
-
+                                <Link to={`/details/${p.identifier}`} className="cardLink">
+                                    <div className="cards" key={p.id}>
+                                        <img className="card-img" src={`https://apimvp.deepchainlabs.com/${p.video_thumbnail_src}`} alt="abc" />
+                                        <div className="info">
+                                            <span>{p.name}<br />{p.sub_info}</span><br />
+                                            <Link to={`/details/${p.identifier}`} className="view_now-btn">View Now
+                                                <img src={playIcon} className="play-icon" />
+                                            </Link>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             )
                             }
                         </Carousel >

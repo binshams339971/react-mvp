@@ -55,7 +55,6 @@ const productService = {
         }
     },
     insertProduct: async (body) => {
-        console.log(body.get('video'));
         const requestConfig = {
             headers: {
                 'Content-Type': 'multipart/form-data'

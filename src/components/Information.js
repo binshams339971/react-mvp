@@ -5,7 +5,7 @@ export default function Information() {
         <div className='container' id="content">
             <div className='d-flex justify-content-between'>
                 <Link to="/">
-                    <span class="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
+                    <span className="material-icons-outlined" style={{ color: "#1C4A45", fontWeight: "bold" }}>
                         keyboard_backspace
                     </span>
                 </Link>
